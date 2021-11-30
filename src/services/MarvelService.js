@@ -1,5 +1,8 @@
 class MarvelService {
-     getResource =  async (url) => {
+    _apiBase = 'https://gateway.marvel.com:443/v1/public/';
+    _apiKey = 'apikey=42332471b4e98cd637b3e677323fc340'
+
+    getResource =  async (url) => {
         let res = await fetch(url);
     
         if (!res.ok) {
@@ -9,30 +12,27 @@ class MarvelService {
         return await res.json();
     };
 
-    getAllCharacters = () => {
-        return this.getResource('https://gateway.marvel.com:443/v1/public/characters?apikey=42332471b4e98cd637b3e677323fc340');
+    getAllCharacters = async () => {
+        const res = await this.getResource(`${this._apiBase}/characters?limit=9&offset=310&${this._apiKey}`);
+
+        return res.data.results.map(this._transformCharacter)
+    }
+
+    getCharacter = async (id) => {
+        const res = await this.getResource(`${this._apiBase}/characters/${id}?${this._apiKey}`);
+
+        return this._transformCharacter(res.data.results[0]);
+    }
+
+    _transformCharacter = (char) => {
+        return {
+            name: char.name,
+            description: char.description,
+            thubmnail: char.thumbnail.path + '.' + char.thumbnail.extension,
+            homepage: char.urls[0].url,
+            wiki: char.urls[1].url
+        }
     }
 }
 
-export default MarvelService;
-
-// const postData = async (url, data) => {
-//     let res = await fetch(url, {
-//         method: 'POST',
-//         body: data            
-//     });
-
-//     return await res.text();
-// };
-
-// const getResource = async (url, data) => {
-//     let res = await fetch(url);
-
-//     if (!res.ok) {
-//         throw new Error(`Could not fetch ${url}, status: ${res.status}`);
-//     }
-
-//     return await res.json();
-// };
-
-// export {postData, getResource};
+export default MarvelService; 
