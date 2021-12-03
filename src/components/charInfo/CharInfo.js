@@ -71,7 +71,6 @@ const View = ({char}) => {
     let imgStyle = thumbnail.endsWith('image_not_available.jpg') ? {'objectFit' : 'contain'} : {'objectFit' : 'cover'};
 
     const comicsItems = comics.length > 0 ? comics.map((item, i) => {
-        console.log(item, i);
         if (i < 10) {
             return (
                 <li className="char__comics-item" key={i}>{item.name}</li>
