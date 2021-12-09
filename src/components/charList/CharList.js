@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import MarvelService from '../../services/MarvelService';
@@ -15,13 +15,34 @@ class CharList extends Component {
         error: false,
         newItemLoading: false,
         offset: 310,
-        charEnded: false
+        charEnded: false,
+        choosen: null
     }
+
+    charListElem = React.createRef();
+    charElemsArray = [];
 
     marvelService = new MarvelService();
 
     componentDidMount() {        
         this.updateList();
+        this.charListElem.current.addEventListener('click', this.changeClass);
+        this.charListElem.current.addEventListener('focusin', this.changeClass);
+    }
+
+    componentWillUnmount() {
+        this.charListElem.current.removeEventListener('click', this.changeClass);
+        this.charListElem.current.removeEventListener('focusin', this.changeClass);
+    }
+
+    changeClass = (e) => {
+        this.charElemsArray.forEach(item => {
+            if (item === e.target.closest('li')) {
+                item.classList.add('char__item_selected')
+            } else if (e.target.closest('li')) {
+                item.classList.remove('char__item_selected')
+            }
+        })
     }
 
     onListLoading = () => {
@@ -55,18 +76,25 @@ class CharList extends Component {
             .getAllCharacters(offset)
             .then(this.onListLoaded)
             .catch(this.onError)
-    }   
+    }
+
+    charPush = (char) => {
+        this.charElemsArray.push(char);
+    }
 
     renderItems(arr) {
-        const listItems = arr.map(({name, thumbnail, id}) => {
+        const listItems = arr.map(({name, thumbnail, id}, i) => {
             if (name.length > 36) name = name.slice(0,36) + '...';
 
             let imgStyle = thumbnail.endsWith('image_not_available.jpg') ? {'objectFit' : 'unset'} : {'objectFit' : 'cover'};
 
             return (
                 <li className="char__item"
+                    tabIndex={'0'}
                     key={id}
-                    onClick={() => this.props.onCharSelected(id)}>
+                    ref={this.charPush}
+                    onClick={() => this.props.onCharSelected(id)}
+                    onFocus={() => this.props.onCharSelected(id)}>
                     <img src={thumbnail} alt={name} style={imgStyle}/>
                     <div className="char__name">{name}</div>
                 </li>
@@ -88,7 +116,7 @@ class CharList extends Component {
         const content = !(loading || error) ? this.renderItems(charList) : null;
 
         return (
-            <div className="char__list">
+            <div className="char__list" ref={this.charListElem}>
                 {errorMessage}
                 {spinner}
                 {content}                
