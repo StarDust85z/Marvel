@@ -19,30 +19,10 @@ class CharList extends Component {
         choosen: null
     }
 
-    charListElem = React.createRef();
-    charElemsArray = [];
-
     marvelService = new MarvelService();
 
     componentDidMount() {        
         this.updateList();
-        this.charListElem.current.addEventListener('click', this.changeClass);
-        this.charListElem.current.addEventListener('focusin', this.changeClass);
-    }
-
-    componentWillUnmount() {
-        this.charListElem.current.removeEventListener('click', this.changeClass);
-        this.charListElem.current.removeEventListener('focusin', this.changeClass);
-    }
-
-    changeClass = (e) => {
-        this.charElemsArray.forEach(item => {
-            if (item === e.target.closest('li')) {
-                item.classList.add('char__item_selected')
-            } else if (e.target.closest('li')) {
-                item.classList.remove('char__item_selected')
-            }
-        })
     }
 
     onListLoading = () => {
@@ -78,8 +58,20 @@ class CharList extends Component {
             .catch(this.onError)
     }
 
+    charElemsArray = [];
+
     charPush = (char) => {
         this.charElemsArray.push(char);
+    }
+
+    changeClass = (num) => {
+        this.charElemsArray.forEach((item, i) => {
+            if (num === i) {
+                item.classList.add('char__item_selected')
+            } else {
+                item.classList.remove('char__item_selected')
+            }
+        })
     }
 
     renderItems(arr) {
@@ -93,8 +85,16 @@ class CharList extends Component {
                     tabIndex={'0'}
                     key={id}
                     ref={this.charPush}
-                    onClick={() => this.props.onCharSelected(id)}
-                    onFocus={() => this.props.onCharSelected(id)}>
+                    onClick={() => {
+                        this.props.onCharSelected(id);
+                        this.changeClass(i);
+                    }}
+                    onKeyPress={(e) => {
+                        if (e.key === ' ' || e.key === "Enter") {
+                            this.props.onCharSelected(id);
+                            this.changeClass(i);
+                        }
+                    }}>
                     <img src={thumbnail} alt={name} style={imgStyle}/>
                     <div className="char__name">{name}</div>
                 </li>
