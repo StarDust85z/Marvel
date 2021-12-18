@@ -1,22 +1,25 @@
+import { Link, NavLink } from 'react-router-dom'
 import './appHeader.scss';
 
 const AppHeader = (props) => {
     return (
         <header className="app__header">
             <h1 className="app__title">
-                <a href="#">
+                <Link to="/">
                     <span>Marvel</span> information portal
-                </a>
+                </Link>
             </h1>
             <nav className="app__menu">
                 <ul>
-                    <li><a href="#"
-                           onClick={() => props.onPageSelect(0)}>
-                               Characters</a></li>
+                    <li><NavLink 
+                        exact
+                        activeStyle={{color: '#9f0013'}}
+                        to="/">Characters</NavLink></li>
                     /
-                    <li><a href="#"
-                           onClick={() => props.onPageSelect(1)}>
-                               Comics</a></li>
+                    <li><NavLink 
+                        exact
+                        activeStyle={{color: '#9f0013'}}
+                        to="/comics">Comics</NavLink></li>
                 </ul>
             </nav>
         </header>
