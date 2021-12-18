@@ -26,7 +26,7 @@ const App = () => {
                     </ErrorBoundary>  
                     <ErrorBoundary>
                         <CharInfo charId={char}/>
-                    </ErrorBoundary>                        
+                    </ErrorBoundary>              
                 </div>
                 <img className="bg-decoration" src={decoration} alt="vision"/>
             </main>

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-import MarvelService from '../../services/MarvelService';
+import useMarvelService from '../../services/MarvelService';
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 
@@ -8,17 +8,16 @@ import './randomChar.scss';
 import mjolnir from '../../resources/img/mjolnir.png';
 
 const RandomChar = () => {
-    const [char, setChar] = useState({}),
-          [loading, setLoading] = useState(true),
-          [error, setError] = useState(false)
+
+    const [char, setChar] = useState({})
 
     let timerId
 
-    const marvelService = new MarvelService()
+    const {loading, error, getCharacter, clearError} = useMarvelService();
 
     useEffect(() => {
         updateChar()
-        timerId = setInterval(updateChar, 10000)
+        timerId = setInterval(updateChar, 60000)
 
         return () => {
             clearInterval(timerId)
@@ -27,24 +26,13 @@ const RandomChar = () => {
 
     const onCharLoaded = char => {
         setChar(char)
-        setLoading(false)
-        setError(false)
-    }
-
-    const onError = () => {
-        setError(true)
-        setLoading(false)
     }
 
     const updateChar = () => {
-        setError(false)
-        setLoading(true)
+        clearError()
         const id = Math.floor(Math.random() * (1011400 - 1011000) + 1011000)
-
-        marvelService
-            .getCharacter(id) 
+        getCharacter(id) 
             .then(onCharLoaded)
-            .catch(onError)
     }    
 
     const errorMessage = error ? <ErrorMessage/> : null;
@@ -81,14 +69,14 @@ const View = ({char}) => {
     const description = !tempDescr ? 'Description not avaible yet, check homepage to find out more' : 
     tempDescr.length > 200 ?  tempDescr.slice(0, 200) + '...' : tempDescr;
 
-    const imgStyle = thumbnail.endsWith('image_not_available.jpg') ? {'objectFit': 'contain'} : {'objectFit': 'unset'};
+    // const imgStyle = thumbnail.indexOf('image_not_available.jpg') !== -1 ? {'objectFit': 'contain'} : {'objectFit': 'unset'};
 
     return (
         <div className="randomchar__block">
             <img src={thumbnail}
                 alt="Random character"
                 className="randomchar__img"
-                style={imgStyle}/>
+                /* style={imgStyle} *//>
             <div className="randomchar__info">
                 <p className="randomchar__name">{name}</p>
                 <p className="randomchar__descr">{description}</p>
