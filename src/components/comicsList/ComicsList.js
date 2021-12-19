@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 import useMarvelService from '../../services/MarvelService';
 import Spinner from '../spinner/Spinner';
@@ -42,11 +43,11 @@ const ComicsList = () => {
                 <li className="comics__item"
                     tabIndex={'0'}
                     key={i}>
-                    <a href="#">
+                    <Link to={`/comics/${id}`}>
                         <img src={thumbnail} alt={title} className="comics__item-img"/>
                         <div className="comics__item-name">{title}</div>
-                        <div className="comics__item-price">{`${price}$`}</div>
-                    </a>
+                        <div className="comics__item-price">{`${price}`}</div>
+                    </Link>
                 </li>
             )
         })
