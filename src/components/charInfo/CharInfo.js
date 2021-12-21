@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 import useMarvelService from '../../services/MarvelService';
 import Spinner from '../spinner/Spinner';
@@ -55,11 +56,14 @@ const View = ({char}) => {
 
     const comicsItems = comics.length > 0 ? comics.map((item, i) => {
         if (i < 10) {
+            const keyArray = item.resourceURI.split('/')
+            const k = keyArray[keyArray.length-1]
+
             return (
-                <li className="char__comics-item" key={i}>{item.name}</li>
+                <li className="char__comics-item" key={k}><Link to={`comics/${k}`}>{item.name}</Link></li>
             )
         } else if (i === 10) {
-            return <li style={{marginTop: 8, color: 'rgba(0,0,0,.3'}} key={i}>and more...</li>
+            return <li style={{marginTop: 8, color: 'rgba(0,0,0,.3'}} key={10}>and more...</li>
         } else {
             return ''
         }
