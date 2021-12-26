@@ -10,6 +10,7 @@ import './charInfo.scss';
 
 const CharInfo = (props) => {
     const [char, setChar] = useState(null)
+    const [comicsCount, setComicsCount] = useState(10)
 
     const {loading, error, clearError, getCharacter} = useMarvelService()
 
@@ -18,6 +19,7 @@ const CharInfo = (props) => {
     }, [])
 
     useEffect(() => {
+        setComicsCount(10)
         updateChar()
     }, [props.charId])
 
@@ -37,7 +39,7 @@ const CharInfo = (props) => {
     const skeleton = char || loading || error ? null : <Skeleton/>;
     const errorMessage = error ? <ErrorMessage/> : null;
     const spinner = loading ? <Spinner/> : null;
-    const content = !(loading || error|| !char) ? <View char={char}/> : null;
+    const content = !(loading || error|| !char) ? <View char={char} comicsCount={comicsCount} setComicsCount={setComicsCount}/> : null;
 
     return (
         <div className="char__info">
@@ -49,21 +51,26 @@ const CharInfo = (props) => {
     )
 }
 
-const View = ({char}) => {
+const View = ({char, comicsCount, setComicsCount}) => {
     const {name, description, thumbnail, homepage, wiki, comics} = char;
 
     let imgStyle = thumbnail.endsWith('image_not_available.jpg') ? {'objectFit' : 'contain'} : {'objectFit' : 'cover'};
 
     const comicsItems = comics.length > 0 ? comics.map((item, i) => {
-        if (i < 10) {
+        if (i < comicsCount) {
             const keyArray = item.resourceURI.split('/')
             const k = keyArray[keyArray.length-1]
 
             return (
                 <li className="char__comics-item" key={k}><Link to={`comics/${k}`}>{item.name}</Link></li>
             )
-        } else if (i === 10) {
-            return <li style={{marginTop: 8, color: 'rgba(0,0,0,.3'}} key={10}>and more...</li>
+        } else if (i === comicsCount) {
+            return <li 
+                        style={{marginTop: 8, color: 'rgba(0,0,0,.3', cursor: 'pointer'}}
+                        key={i}
+                        onClick={() => {
+                            setComicsCount(comicsCount => comicsCount + 10)
+                        }}>more...</li>
         } else {
             return ''
         }

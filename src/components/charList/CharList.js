@@ -50,7 +50,7 @@ const CharList = (props) => {
 
     const renderItems = (arr) => {
         const listItems = arr.map(({name, thumbnail, id}, i) => {
-            if (name.length > 36) name = name.slice(0,36) + '...';
+            if (name.length > 30) name = name.slice(0,30) + '...';
 
             let imgStyle = thumbnail.endsWith('image_not_available.jpg') ? {'objectFit' : 'unset'} : {'objectFit' : 'cover'};
 
