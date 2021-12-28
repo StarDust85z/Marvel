@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
 import useMarvelService from '../../services/MarvelService';
 import Spinner from '../spinner/Spinner';
@@ -49,36 +50,39 @@ const CharList = (props) => {
     }
 
     const renderItems = (arr) => {
-        const listItems = arr.map(({name, thumbnail, id}, i) => {
-            if (name.length > 30) name = name.slice(0,30) + '...';
-
-            let imgStyle = thumbnail.endsWith('image_not_available.jpg') ? {'objectFit' : 'unset'} : {'objectFit' : 'cover'};
-
-            return (
-                <li className="char__item"
-                    tabIndex={'0'}
-                    key={id}
-                    ref={elem => charRefs.current[i] = elem}
-                    onClick={() => {
-                        props.onCharSelected(id);
-                        changeClass(i);
-                    }}
-                    onKeyPress={(e) => {
-                        if (e.key === ' ' || e.key === "Enter") {
-                            props.onCharSelected(id);
-                            changeClass(i);
-                        }
-                    }}>
-                    <img src={thumbnail} alt={name} style={imgStyle}/>
-                    <div className="char__name">{name}</div>
-                </li>
-            )
-        })
+        const duration = 1500;
 
         return (
-            <ul className="char__grid">
-                {listItems}
-            </ul>
+            <TransitionGroup
+                className="char__grid"
+                component='ul'>
+                {arr.map(({name, thumbnail, id}, i) => {
+                    if (name.length > 30) name = name.slice(0,30) + '...';
+
+                    let imgStyle = thumbnail.endsWith('image_not_available.jpg') ? {'objectFit' : 'unset'} : {'objectFit' : 'cover'};
+
+                    return (
+                        <CSSTransition timeout={duration} key={id} classNames="char__item">
+                            <li className="char__item"
+                                tabIndex={'0'}
+                                ref={elem => charRefs.current[i] = elem}
+                                onClick={() => {
+                                    props.onCharSelected(id);
+                                    changeClass(i);
+                                }}
+                                onKeyPress={(e) => {
+                                    if (e.key === ' ' || e.key === "Enter") {
+                                        props.onCharSelected(id);
+                                        changeClass(i);
+                                    }
+                                }}>
+                                <img src={thumbnail} alt={name} style={imgStyle}/>
+                                <div className="char__name">{name}</div>
+                            </li>
+                        </CSSTransition>
+                    )
+                })}
+            </TransitionGroup>
         )                
     }
 
