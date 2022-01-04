@@ -1,13 +1,14 @@
 import { useParams, Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet';
 
 import AppBanner from "../appBanner/AppBanner";
 import useMarvelService from '../../services/MarvelService';
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
-import './SingleComicPage.scss';
+import './SinglePage.scss';
 
-const SingleComicPage = () => {
+const SinglePage = () => {
     const { comicId, charId } = useParams()
     const [ comic, setComic ] = useState(null)
     const [ char, setChar ] = useState(null)
@@ -48,7 +49,7 @@ const SingleComicPage = () => {
         : !(loading || error) && char ? <ViewChar char={char}/> : null
 
     return (
-        <>
+        <>            
             <AppBanner/>
             {errorMessage}
             {spinner}
@@ -61,7 +62,14 @@ const ViewComic = ({comic}) => {
     const {title, description, pageCount, thumbnail, language, price} = comic
 
     return (
-        <div className="single-comic">                
+        <div className="single-comic">
+            <Helmet>
+                <meta
+                    name="description"
+                    content={`${title} comic book page`}
+                />
+                <title>{`${title}`}</title>
+            </Helmet>                
             <img src={thumbnail} alt={title} className="single-comic__img"/>
             <div className="single-comic__info">
                 <h2 className="single-comic__name">{title}</h2>
@@ -79,7 +87,14 @@ const ViewChar = ({char}) => {
     const {name, description, thumbnail} = char
 
     return (
-        <div className="single-comic">                
+        <div className="single-comic">
+            <Helmet>
+                <meta
+                    name="description"
+                    content={`Page about ${name} character`}
+                />
+                <title>{`${name}`}</title>
+            </Helmet>                
             <img src={thumbnail} alt={name} className="single-comic__img"/>
             <div className="single-comic__info">
                 <h2 className="single-comic__name">{name}</h2>
@@ -91,4 +106,4 @@ const ViewChar = ({char}) => {
     )
 }
 
-export default SingleComicPage;
+export default SinglePage;
