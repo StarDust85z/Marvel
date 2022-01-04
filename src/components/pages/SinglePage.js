@@ -62,7 +62,7 @@ const ViewComic = ({comic}) => {
     const {title, description, pageCount, thumbnail, language, price} = comic
 
     return (
-        <div className="single-comic">
+        <div className="single-page">
             <Helmet>
                 <meta
                     name="description"
@@ -70,15 +70,15 @@ const ViewComic = ({comic}) => {
                 />
                 <title>{`${title}`}</title>
             </Helmet>                
-            <img src={thumbnail} alt={title} className="single-comic__img"/>
-            <div className="single-comic__info">
-                <h2 className="single-comic__name">{title}</h2>
-                <p className="single-comic__descr">{description}</p>
-                <p className="single-comic__descr">{pageCount}</p>
-                <p className="single-comic__descr">Language: {language}</p>
-                <div className="single-comic__price">{price}</div>
+            <img src={thumbnail} alt={title} className="single-page__img"/>
+            <div className="single-page__info">
+                <h2 className="single-page__name">{title}</h2>
+                <p className="single-page__descr">{description}</p>
+                <p className="single-page__descr">{pageCount}</p>
+                <p className="single-page__descr">Language: {language}</p>
+                <div className="single-page__price">{price}</div>
             </div>
-            <Link to="../comics" className="single-comic__back">Back to all</Link>
+            <Link to="../comics" className="single-page__back">Back to all</Link>
         </div>
     )
 }
@@ -87,7 +87,7 @@ const ViewChar = ({char}) => {
     const {name, description, thumbnail} = char
 
     return (
-        <div className="single-comic">
+        <div className="single-page">
             <Helmet>
                 <meta
                     name="description"
@@ -95,10 +95,10 @@ const ViewChar = ({char}) => {
                 />
                 <title>{`${name}`}</title>
             </Helmet>                
-            <img src={thumbnail} alt={name} className="single-comic__img"/>
-            <div className="single-comic__info">
-                <h2 className="single-comic__name">{name}</h2>
-                <p className="single-comic__descr">
+            <img src={thumbnail} alt={name} className="single-page__img"/>
+            <div className="single-page__info">
+                <h2 className="single-page__name">{name}</h2>
+                <p className="single-page__descr">
                     {description ? description : 'No description available yet'}
                 </p>
             </div>
