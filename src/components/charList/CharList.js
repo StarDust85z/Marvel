@@ -1,6 +1,5 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import PropTypes from 'prop-types';
-import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
 import useMarvelService from '../../services/MarvelService';
 import Spinner from '../spinner/Spinner';
@@ -66,45 +65,47 @@ const CharList = (props) => {
     }
 
     const renderItems = (arr) => {
+        console.log('render');
         const items = arr.map(({name, thumbnail, id}, i) => {
             if (name.length > 30) name = name.slice(0,30) + '...';
 
             let imgStyle = thumbnail.endsWith('image_not_available.jpg') ? {'objectFit' : 'unset'} : {'objectFit' : 'cover'};
 
             return (
-                <CSSTransition timeout={1500} key={id} classNames="char__item">
-                    <li className="char__item"
-                        tabIndex={'0'}
-                        ref={elem => charRefs.current[i] = elem}
-                        onClick={() => {
+                <li key={id}
+                    className="char__item"
+                    tabIndex={'0'}
+                    ref={elem => charRefs.current[i] = elem}
+                    onClick={() => {
+                        props.onCharSelected(id);
+                        changeClass(i);
+                    }}
+                    onKeyPress={(e) => {
+                        if (e.key === ' ' || e.key === "Enter") {
                             props.onCharSelected(id);
                             changeClass(i);
-                        }}
-                        onKeyPress={(e) => {
-                            if (e.key === ' ' || e.key === "Enter") {
-                                props.onCharSelected(id);
-                                changeClass(i);
-                            }
-                        }}>
-                        <img src={thumbnail} alt={name} style={imgStyle}/>
-                        <div className="char__name">{name}</div>
-                    </li>
-                </CSSTransition>
+                        }
+                    }}>
+                    <img src={thumbnail} alt={name} style={imgStyle}/>
+                    <div className="char__name">{name}</div>
+                </li>
             )
         })
 
         return (
-            <TransitionGroup
-                className="char__grid"
-                component='ul'>
+            <ul className="char__grid">
                 {items}
-            </TransitionGroup>
+            </ul>
         )                
     }
 
+    const elements = useMemo(() => {
+        return setContent(process, () => renderItems(charList), newItemLoading);
+    }, [process])
+
     return (
         <div className="char__list">
-            {setContent(process, () => renderItems(charList), newItemLoading)}
+            {elements}
             <button 
                 className="button button__main button__long"
                 disabled={newItemLoading}

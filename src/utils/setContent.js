@@ -13,7 +13,7 @@ const setContent = (process, Component, data) => {
         case 'error':
             return <ErrorMessage/>
         default:
-            throw new Error('Unepected process state')
+            throw new Error('Unexpected process state')
     }
 }
 

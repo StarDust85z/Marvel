@@ -10,17 +10,16 @@ const RandomChar = () => {
 
     const [char, setChar] = useState({})
 
-    let timerId
-
     const {getCharacter, clearError, process, setProcess} = useMarvelService();
 
     useEffect(() => {
         updateChar()
-        timerId = setInterval(updateChar, 60000)
+        const timerId = setInterval(updateChar, 60000)
 
         return () => {
             clearInterval(timerId)
         }
+        // eslint-disable-next-line
     }, [])
 
     const onCharLoaded = char => {

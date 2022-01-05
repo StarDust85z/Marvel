@@ -32,7 +32,7 @@ const ComicsList = () => {
 
     useEffect(() => {
         updateList(offset, true);
-        // eslint-disable-next-line
+         // eslint-disable-next-line
     }, [])
 
     const onListLoaded = (newComicsList) => {
@@ -60,7 +60,7 @@ const ComicsList = () => {
                     tabIndex={'0'}
                     key={i}>
                     <Link to={`/comics/${id}`}>
-                        <img src={thumbnail} alt={title} className="comics__item-img"/>
+                        <img src={thumbnail} alt={title} style={imgStyle} className="comics__item-img"/>
                         <div className="comics__item-name">{title}</div>
                         <div className="comics__item-price">{`${price}`}</div>
                     </Link>

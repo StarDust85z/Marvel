@@ -17,10 +17,12 @@ const SinglePage = () => {
 
     useEffect(() => {
         if (comicId) updateComic()
+        // eslint-disable-next-line
     }, [comicId])
 
     useEffect(() => {
         if (charId) updateChar()
+        // eslint-disable-next-line
     }, [charId])
 
     const onComicLoaded = comic => {
