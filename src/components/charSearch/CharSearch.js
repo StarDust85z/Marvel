@@ -21,9 +21,11 @@ const CharSearch = () => {
     });
     const { getCharacterByName } = useMarvelService()
 
-    const [charFound, setCharFound] = useState(null)
+    const [charFound, setCharFound] = useState(null),
+          [searching, setSearching] = useState(false)
 
     const onSubmit = ({search}) => {
+        setSearching(true)
         getCharacterByName(search)
             .then(char => {
                 if (char) {
@@ -35,7 +37,7 @@ const CharSearch = () => {
                     })
                     setCharFound(null)
                 } 
-            })
+            }).then(() => setSearching(false))
     }
 
     useEffect(() => {
@@ -65,7 +67,7 @@ const CharSearch = () => {
                             message: 'Minimum 3 letters'
                         }
                     })}/>                
-                <button type="submit" className="button button__main">
+                <button type="submit" className="button button__main" disabled={searching}>
                     <div className="inner">find</div>
                 </button>
                 {charFound ? 

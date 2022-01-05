@@ -4,8 +4,8 @@ import { Helmet } from 'react-helmet';
 
 import AppBanner from "../appBanner/AppBanner";
 import useMarvelService from '../../services/MarvelService';
-import Spinner from '../spinner/Spinner';
-import ErrorMessage from '../errorMessage/ErrorMessage';
+import setContent from '../../utils/setContent';
+
 import './SinglePage.scss';
 
 const SinglePage = () => {
@@ -13,7 +13,7 @@ const SinglePage = () => {
     const [ comic, setComic ] = useState(null)
     const [ char, setChar ] = useState(null)
 
-    const {loading, error, clearError, getComic, getCharacterByName} = useMarvelService()
+    const {clearError, process, setProcess, getComic, getCharacterByName} = useMarvelService()
 
     useEffect(() => {
         if (comicId) updateComic()
@@ -35,25 +35,20 @@ const SinglePage = () => {
         clearError()
         getComic(comicId)
             .then(onComicLoaded)
+            .then(() => setProcess('confirmed'))
     }
 
     const updateChar = () => {        
         clearError()
         getCharacterByName(charId)
             .then(onCharLoaded)
+            .then(() => setProcess('confirmed'))
     }
-
-    const errorMessage = error ? <ErrorMessage/> : null;
-    const spinner = loading ? <Spinner/> : null;
-    const content = !(loading || error) && comic ? <ViewComic comic={comic}/> 
-        : !(loading || error) && char ? <ViewChar char={char}/> : null
 
     return (
         <>            
             <AppBanner/>
-            {errorMessage}
-            {spinner}
-            {content}
+            {setContent(process, charId ? ViewChar : ViewComic, {comic, char})}
         </>
     )
 }

@@ -30,7 +30,7 @@ const MainPage = () => {
                 <ErrorBoundary>
                     <CharList onCharSelected={onCharSelected}/>
                 </ErrorBoundary>
-                <aside>
+                <aside className="char__aside">
                     <ErrorBoundary>
                         <CharInfo charId={char}/>
                     </ErrorBoundary>     
