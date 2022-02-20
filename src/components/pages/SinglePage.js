@@ -5,6 +5,7 @@ import { Helmet } from 'react-helmet';
 import AppBanner from "../appBanner/AppBanner";
 import useMarvelService from '../../services/MarvelService';
 import setContent from '../../utils/setContent';
+import AnimatedPage from './AnimatedPage';
 
 import './SinglePage.scss';
 
@@ -48,10 +49,10 @@ const SinglePage = () => {
     }
 
     return (
-        <>            
+        <AnimatedPage>            
             <AppBanner/>
             {setContent(process, charId ? ViewChar : ViewComic, {comic, char})}
-        </>
+        </AnimatedPage>
     )
 }
 

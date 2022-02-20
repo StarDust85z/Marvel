@@ -1,45 +1,40 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-import useMarvelService from '../../services/MarvelService';
-import setContent from '../../utils/setContent';
+import { useLazyGetCharByIdQuery } from '../../features/api/apiSlice';
 
+import Spinner from '../spinner/Spinner';
+import ErrorMessage from '../errorMessage/ErrorMessage';
+import Skeleton from '../skeleton/Skeleton';
 import './charInfo.scss';
 
-const CharInfo = (props) => {
-    const [char, setChar] = useState(null)
+const CharInfo = ({ charId }) => {
     const [comicsCount, setComicsCount] = useState(10)
-
-    const {clearError, getCharacter, process, setProcess} = useMarvelService()
+    
+    const [trigger, {
+        data: char,
+        isFetching,
+        isError
+    }] = useLazyGetCharByIdQuery()
 
     useEffect(() => {
-        updateChar()
-        // eslint-disable-next-line
-    }, [])
+        if (charId) trigger(charId)
+        setComicsCount(10)        
+    }, [trigger, charId])
 
-    useEffect(() => {
-        setComicsCount(10)
-        updateChar()
-        // eslint-disable-next-line
-    }, [props.charId])
+    const renderChar = (char) => {
+        if (!charId) return <Skeleton />
+        if (isFetching) return <Spinner />
+        if (isError) return <ErrorMessage />
 
-    const onCharLoaded = char => {
-        setChar(char)
+        return <View char={char} comicsCount={comicsCount} setComicsCount={setComicsCount} />
     }
 
-    const updateChar = () => {        
-        const {charId} = props;
-        if (!charId) return;
-
-        clearError()
-        getCharacter(charId)
-            .then(onCharLoaded)
-            .then(() => setProcess('confirmed'))
-    }
+    const content = renderChar(char)
 
     return (
         <div className="char__info">
-            {setContent(process, View, {char, comicsCount, setComicsCount})}               
+            {content}
         </div>
     )
 }

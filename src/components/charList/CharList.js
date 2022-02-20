@@ -1,55 +1,41 @@
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useRef, useMemo } from 'react';
 import PropTypes from 'prop-types';
+import { motion } from 'framer-motion';
 
-import useMarvelService from '../../services/MarvelService';
+import { useGetCharsQuery } from '../../features/api/apiSlice';
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 
 import './charList.scss';
 
-const setContent = (process, Component, newItemLoading) => {
-    switch(process) {
-        case 'waiting':
-            return <Spinner/>
-        case 'loading': 
-            return newItemLoading ? <Component/> : <Spinner/>
-        case 'confirmed':
-            return <Component/>
-        case 'error':
-            return <ErrorMessage/>
-        default:
-            throw new Error('Unexpected process state')
+const cardAnimation = {
+    hidden: {
+        y: 300,
+        opacity: 0,
+        scale: 0.01,
+        // rotate: -360
+    },
+    visible: {
+        y: 0,
+        opacity: 1,
+        scale: 1,
+        // rotate: 0
     }
 }
 
 const CharList = (props) => {
-    
-    const [charList, setCharList] = useState([]),
-          [newItemLoading, setNewItemLoading] = useState(false),
+    // const [charList, setCharList] = useState([]),
+    const [newItemLoading, setNewItemLoading] = useState(false),
           [offset, setOffset] = useState(310),
+          [limit, setLimit] = useState(9),
           [charEnded, setCharEnded] = useState(false)
 
-    const {getAllCharacters, process, setProcess} = useMarvelService();
-
-    useEffect(() => {
-        updateList(offset, true);
-        // eslint-disable-next-line
-    }, [])
-
-    const updateList = (offset, initial) => {
-        initial ? setNewItemLoading(false) : setNewItemLoading(true)
-
-        getAllCharacters(offset)
-            .then(onListLoaded)
-            .then(() => setProcess('confirmed'))
-    }
-
-    const onListLoaded = (newCharList) => {
-        setCharList(charList => [...charList, ...newCharList])
-        setNewItemLoading(false)
-        setOffset(offset => offset + 9)
-        setCharEnded(newCharList.length < 9)
-    }
+    const {
+        data: chars = [],
+        isLoading,
+        isFetching,
+        isError
+    } = useGetCharsQuery({offset, limit})
 
     let charRefs = useRef([])
 
@@ -66,13 +52,19 @@ const CharList = (props) => {
 
     const renderItems = (arr) => {
         console.log('render');
+
+        if (isLoading) return <Spinner />
+        if (isError) return <ErrorMessage />
+
+
         const items = arr.map(({name, thumbnail, id}, i) => {
             if (name.length > 30) name = name.slice(0,30) + '...';
 
             let imgStyle = thumbnail.endsWith('image_not_available.jpg') ? {'objectFit' : 'unset'} : {'objectFit' : 'cover'};
 
             return (
-                <li key={id}
+                <motion.li 
+                    key={id}
                     className="char__item"
                     tabIndex={'0'}
                     ref={elem => charRefs.current[i] = elem}
@@ -85,32 +77,42 @@ const CharList = (props) => {
                             props.onCharSelected(id);
                             changeClass(i);
                         }
-                    }}>
+                    }}   
+                    initial="hidden"
+                    whileInView="visible"
+                    variants={cardAnimation}
+                    viewport={{ once: true }}
+                    transition={{
+                        duration: 1,
+                        type: "spring",
+                        ease: "easeInOut"
+                    }}                 
+                >
                     <img src={thumbnail} alt={name} style={imgStyle}/>
                     <div className="char__name">{name}</div>
-                </li>
+                </motion.li>
             )
         })
 
         return (
-            <ul className="char__grid">
+            <ul 
+                className="char__grid"
+            >
                 {items}
             </ul>
         )                
     }
 
-    const elements = useMemo(() => {
-        return setContent(process, () => renderItems(charList), newItemLoading);
-    }, [process])
+    const elements = useMemo(() => renderItems(chars), [chars])
 
     return (
         <div className="char__list">
             {elements}
             <button 
                 className="button button__main button__long"
-                disabled={newItemLoading}
-                style={{ 'display': charEnded ? 'none' : 'block' }}
-                onClick={() => updateList(offset)}>
+                disabled={isFetching}
+                // style={{ 'display': charEnded ? 'none' : 'block' }}
+                onClick={() => setLimit(limit => limit + 9)}>
                 <div className="inner">load more</div>
             </button>
         </div>

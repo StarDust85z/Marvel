@@ -6,6 +6,7 @@ import CharList from "../charList/CharList";
 import CharInfo from "../charInfo/CharInfo";
 import CharSearch from "../charSearch/CharSearch";
 import ErrorBoundary from "../errorBoundary/ErrorBoundary";
+import AnimatedPage from '../pages/AnimatedPage';
 
 import decoration from '../../resources/img/vision.png';
 
@@ -17,7 +18,7 @@ const MainPage = () => {
     console.log('mp render');
     
     return (
-        <>
+        <AnimatedPage>
             <Helmet>
                 <meta
                     name="description"
@@ -42,7 +43,7 @@ const MainPage = () => {
                 </aside>  
             </div>
             <img className="bg-decoration" src={decoration} alt="vision"/>
-        </>
+        </AnimatedPage>
     )
 }
 
