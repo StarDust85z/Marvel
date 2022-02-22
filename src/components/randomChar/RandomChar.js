@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { useLazyGetCharByIdQuery } from '../../features/api/apiSlice';
+import { useLazyGetCharByIdQuery } from '../../features/api/charsSlice';
 
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';

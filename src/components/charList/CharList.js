@@ -2,7 +2,7 @@ import { useState, useRef, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
 
-import { useGetCharsQuery } from '../../features/api/apiSlice';
+import { useGetCharsQuery } from '../../features/api/charsSlice';
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 
@@ -24,6 +24,7 @@ const cardAnimation = {
 }
 
 const CharList = (props) => {
+    
     // const [charList, setCharList] = useState([]),
     const [newItemLoading, setNewItemLoading] = useState(false),
           [offset, setOffset] = useState(310),
@@ -103,7 +104,7 @@ const CharList = (props) => {
         )                
     }
 
-    const elements = useMemo(() => renderItems(chars), [chars])
+    const elements = useMemo(() => renderItems(chars), [chars, offset])
 
     return (
         <div className="char__list">

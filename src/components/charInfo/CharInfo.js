@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-import { useLazyGetCharByIdQuery } from '../../features/api/apiSlice';
+import { useLazyGetCharByIdQuery } from '../../features/api/charsSlice';
 
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
@@ -23,11 +23,11 @@ const CharInfo = ({ charId }) => {
     }, [trigger, charId])
 
     const renderChar = (char) => {
-        if (!charId) return <Skeleton />
         if (isFetching) return <Spinner />
         if (isError) return <ErrorMessage />
+        if (char) return <View char={char} comicsCount={comicsCount} setComicsCount={setComicsCount} />
 
-        return <View char={char} comicsCount={comicsCount} setComicsCount={setComicsCount} />
+        return <Skeleton />
     }
 
     const content = renderChar(char)
@@ -40,6 +40,7 @@ const CharInfo = ({ charId }) => {
 }
 
 const View = ({char, comicsCount, setComicsCount}) => {
+    console.log(char);
     const {name, description, thumbnail, homepage, wiki, comics} = char;
 
     let imgStyle = thumbnail.endsWith('image_not_available.jpg') ? {'objectFit' : 'contain'} : {'objectFit' : 'cover'};

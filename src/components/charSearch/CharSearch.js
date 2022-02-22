@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useForm } from "react-hook-form";
 
-import { useLazyGetCharByNameQuery } from '../../features/api/apiSlice';
+import { useLazyGetCharByNameQuery } from '../../features/api/charsSlice';
 
 import './charSearch.scss'
 
