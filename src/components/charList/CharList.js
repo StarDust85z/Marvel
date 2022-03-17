@@ -34,8 +34,7 @@ const CharList = (props) => {
     const [trigger, {
         isLoading,
         isFetching,
-        isError,
-        isSuccess
+        isError
     }] = useLazyGetCharsBySearchQuery()
 
     useEffect(() => {
@@ -130,7 +129,7 @@ const CharList = (props) => {
             <button 
                 className="button button__main button__long"
                 disabled={isFetching}
-                style={{ 'display': charEnded || isLoading ? 'none' : 'block' }}
+                style={{ 'display': charEnded || (isFetching && !offset) ? 'none' : 'block' }}
                 onClick={() => updateList(offset)}
             >
                 <div className="inner">load more</div>

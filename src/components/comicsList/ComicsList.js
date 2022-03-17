@@ -1,60 +1,50 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-import useMarvelService from '../../services/MarvelService';
-import { useGetComicsQuery } from '../../features/api/apiSlice'
+import { useLazyGetComicsQuery } from '../../features/api/apiSlice'
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 
 import './comicsList.scss';
 
-const setContent = (process, Component, newItemLoading) => {
-    switch(process) {
-        case 'waiting':
-            return <Spinner/>
-        case 'loading': 
-            return newItemLoading ? <Component/> : <Spinner/>
-        case 'confirmed':
-            return <Component/>
-        case 'error':
-            return <ErrorMessage/>
-        default:
-            throw new Error('Unexpected process state')
-    }
-}
-
 const ComicsList = () => {
     const [comicsList, setComicsList] = useState([]),
-          [newItemLoading, setNewItemLoading] = useState(false),
           [offset, setOffset] = useState(0),
           [comicsEnded, setComicsEnded] = useState(false)
 
-    const { getAllComics, process, setProcess } = useMarvelService()
+    const [trigger, {
+        isLoading,
+        isFetching,
+        isError
+    }] = useLazyGetComicsQuery()
 
     useEffect(() => {
-        updateList(offset, true);
+        updateList()
          // eslint-disable-next-line
     }, [])
 
     const onListLoaded = (newComicsList) => {
         setComicsList(comicsList => [...comicsList, ...newComicsList])
-        setNewItemLoading(false)
         setOffset(offset => offset + 8)
         if (newComicsList.length < 8) setComicsEnded(true)
     }
 
-    const updateList = (offset, initial) => {
-        initial ? setNewItemLoading(false) : setNewItemLoading(true)
-
-        getAllComics(offset)
+    const updateList = () => {
+        trigger(offset)
+            .unwrap()
             .then(onListLoaded)
-            .then(() => setProcess('confirmed'))
     }
 
     const renderItems = (arr) => {
+        console.log('Comics render!');
+
+        if (isLoading) return <Spinner />
+        if (isError) return <ErrorMessage />
+
         const listItems = arr.map(({title, thumbnail, id, price}, i) => {
             if (title.length > 36) title = title.slice(0,36) + '...';
-            let imgStyle = thumbnail.endsWith('image_not_available.jpg') ? {'objectFit' : 'unset'} : {'objectFit' : 'cover'};
+            let imgStyle = thumbnail.endsWith('image_not_available.jpg') ? 
+                {'objectFit' : 'unset'} : {'objectFit' : 'cover'};
 
             return (
                 <li className="comics__item"
@@ -76,13 +66,17 @@ const ComicsList = () => {
         )                
     }
 
+    const elements = renderItems(comicsList)
+
     return (
         <div className="comics__list">            
-            {setContent(process, () => renderItems(comicsList), newItemLoading)}
-            <button className="button button__main button__long"
-                    disabled={newItemLoading}
-                    style={{ 'display': comicsEnded ? 'none' : 'block' }}
-                    onClick={() => updateList(offset)}>
+            {elements}
+            <button 
+                className="button button__main button__long"
+                disabled={isFetching}
+                style={{ 'display': comicsEnded || isLoading ? 'none' : 'block' }}
+                onClick={() => updateList(offset)}
+            >
                 <div className="inner">load more</div>
             </button>
         </div>

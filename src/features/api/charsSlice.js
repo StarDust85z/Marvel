@@ -10,6 +10,7 @@ const _baseOffset = 310
 const limit = 9
 
 const _transformCharacter = (char) => {
+	console.log(char);
 	return {
 		name: char.name,
 		description: char.description,

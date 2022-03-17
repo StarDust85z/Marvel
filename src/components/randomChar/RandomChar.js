@@ -14,7 +14,6 @@ const RandomChar = () => {
         isFetching,
         isError
     }] = useLazyGetCharByIdQuery()
-    // const [ charId, setCharId ] = useState(1011400)
 
     const setRandomChar = () => {
         trigger(Math.floor(Math.random() * (1011400 - 1011000) + 1011000))
@@ -59,9 +58,9 @@ const RandomChar = () => {
 }
 
 const View = ({char}) => {
-    const {name, id, description, thumbnail, homepage, wiki} = char
+    const {name, id, description, thumbnail, homepage} = char
 
-    const descr = !description ? 'Description not avaible yet, check homepage to find out more' : 
+    const descr = !description ? 'Description not avaible yet, check wiki to find out more' : 
     description.length > 200 ?  description.slice(0, 200) + '...' : description;
 
     const imgStyle = thumbnail?.indexOf('image_not_available.jpg') !== -1 ? {'objectFit': 'contain'} : {'objectFit': 'unset'};
@@ -76,9 +75,6 @@ const View = ({char}) => {
                 <p className="randomchar__name">{name}</p>
                 <p className="randomchar__descr">{descr}</p>
                 <div className="randomchar__btns">
-                    {/* <a href={homepage} className="button button__main">
-                        <div className="inner">homepage</div>
-                    </a> */}
                     <Link 
                         to={`characters/${id}`}
                         className="button button__main"

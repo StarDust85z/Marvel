@@ -40,7 +40,7 @@ const CharInfo = ({ charId }) => {
 }
 
 const View = ({char, comicsCount, setComicsCount}) => {
-    const {name, description, thumbnail, homepage, wiki, comics} = char;
+    const {name, description, thumbnail, homepage, id, comics} = char;
 
     let imgStyle = thumbnail.endsWith('image_not_available.jpg') ? {'objectFit' : 'contain'} : {'objectFit' : 'cover'};
 
@@ -54,11 +54,11 @@ const View = ({char, comicsCount, setComicsCount}) => {
             )
         } else if (i === comicsCount) {
             return <li 
-                style={{marginTop: 8, color: 'rgba(0,0,0,.3', cursor: 'pointer'}}
+                style={{marginTop: 8, color: 'rgba(0,0,0,.3'}}
                 key={i}
-                onClick={() => setComicsCount(comicsCount => comicsCount + 10)}
+                // onClick={() => setComicsCount(comicsCount => comicsCount + 10)}
             >
-                more...
+                more on char's page..
             </li>
         } else {
             return ''
@@ -72,10 +72,13 @@ const View = ({char, comicsCount, setComicsCount}) => {
                 <div>
                     <div className="char__info-name">{name}</div>
                     <div className="char__btns">
-                        <a href={homepage} className="button button__main">
-                            <div className="inner">homepage</div>
-                        </a>
-                        <a href={wiki} className="button button__secondary">
+                        <Link 
+                            to={`characters/${id}`}
+                            className="button button__main"
+                        >
+                            <div className="inner">To page</div>
+                        </Link>
+                        <a href={homepage} className="button button__secondary">
                             <div className="inner">Wiki</div>
                         </a>
                     </div>

@@ -1,57 +1,56 @@
 import { useParams, Link } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 
+import { useLazyGetCharByIdQuery } from '../../features/api/charsSlice';
+import { useLazyGetComicByIdQuery } from '../../features/api/apiSlice';
+
 import AppBanner from "../appBanner/AppBanner";
-import useMarvelService from '../../services/MarvelService';
-import setContent from '../../utils/setContent';
 import AnimatedPage from './AnimatedPage';
+import Spinner from '../spinner/Spinner';
+import ErrorMessage from '../errorMessage/ErrorMessage';
 
 import './SinglePage.scss';
 
 const SinglePage = () => {
     const { comicId, charId } = useParams()
-    const [ comic, setComic ] = useState(null)
-    const [ char, setChar ] = useState(null)
+    // const [ comic, setComic ] = useState(null)
+    // const [ char, setChar ] = useState(null)
 
-    const {clearError, process, setProcess, getComic, getCharacterByName} = useMarvelService()
+    // const {clearError, process, setProcess, getComic, getCharacterByName} = useMarvelService()
+    
+    const [ triggerChar, {
+        data: char,
+        isFetching: isCharFetching,
+        isError: isCharError
+    }] = useLazyGetCharByIdQuery()
+
+    const [ triggerComic, {
+        data: comic,
+        isFetching: isComicFetching,
+        isError: isComicError
+    }] = useLazyGetComicByIdQuery()
 
     useEffect(() => {
-        if (comicId) updateComic()
+        if (charId) triggerChar(charId)
+        if (comicId) triggerComic(comicId)
         // eslint-disable-next-line
-    }, [comicId])
+    }, [charId, comicId])
 
-    useEffect(() => {
-        if (charId) updateChar()
-        // eslint-disable-next-line
-    }, [charId])
-
-    const onComicLoaded = comic => {
-        setComic(comic)
+    const renderPage = () => {
+        console.log(char, comic);
+        if (isCharFetching || isComicFetching) return <Spinner />
+        if (isCharError || isComicError) return <ErrorMessage />
+        if (char) return <ViewChar char={char} />
+        if (comic) return <ViewComic comic={comic} />
     }
 
-    const onCharLoaded = char => {
-        setChar(char)
-    }
-
-    const updateComic = () => {        
-        clearError()
-        getComic(comicId)
-            .then(onComicLoaded)
-            .then(() => setProcess('confirmed'))
-    }
-
-    const updateChar = () => {        
-        clearError()
-        getCharacterByName(charId)
-            .then(onCharLoaded)
-            .then(() => setProcess('confirmed'))
-    }
+    const content = renderPage()
 
     return (
         <AnimatedPage>            
             <AppBanner/>
-            {setContent(process, charId ? ViewChar : ViewComic, {comic, char})}
+            {content}
         </AnimatedPage>
     )
 }
@@ -100,6 +99,7 @@ const ViewChar = ({char}) => {
                     {description ? description : 'No description available yet'}
                 </p>
             </div>
+            <Link to=".." className="single-page__back">Back to all</Link>
         </div>
     )
 }
