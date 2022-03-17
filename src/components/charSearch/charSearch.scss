@@ -1,6 +1,6 @@
 @import '../../style/variables.scss';
 
-.char {    
+.char {
     &__search {
         margin-top: 30px;
         width: 425px;
@@ -9,20 +9,56 @@
         box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.25);
         z-index: 5;
         background-color: #fff;
+
+        &-letters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 11px;
+            margin: 12px 0 20px;
+
+            .char__search-letter {
+
+                text-align: center;
+                display: block;
+                color: #333;
+                padding: 3px;
+                position: relative;
+                transform: skewX(-5deg);
+                text-transform: uppercase;
+                cursor: pointer;
+
+                &::before {
+                    content: "";
+                    top: 0;
+                    left: 0;
+                    position: absolute;
+                    display: block;
+                    width: 100%;
+                    height: 100%;
+                    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.25);
+                    transform: skewX(-15deg);
+                }
+
+            }
+        }
+
         &-title {
             font-weight: bold;
             font-size: 18px;
             line-height: 24px;
         }
+
         &-form {
-            margin-top: 15px;
+            margin-top: 12px;
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
+
             .button__secondary {
                 margin-top: 15px;
             }
         }
+
         &-input {
             margin-right: 24px;
             width: 250px;
@@ -32,14 +68,17 @@
             border: none;
             box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
             font-size: 14px;
-            line-height: 16px;            
+            line-height: 16px;
+
             &:focus {
                 outline: none;
             }
+
             &:placeholder {
                 color: rgba(0, 0, 0, 0.5);
             }
         }
+
         &-error {
             margin-top: 25px;
             color: #9F0013;
@@ -47,6 +86,7 @@
             font-size: 18px;
             line-height: 21px;
         }
+
         &-result {
             max-width: 250px;
             margin-top: 22px;

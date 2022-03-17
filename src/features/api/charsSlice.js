@@ -1,14 +1,22 @@
+import { 
+    createSelector,
+    createSlice,
+} from '@reduxjs/toolkit'
+
 import { apiSlice } from './apiSlice'
 
 const _apiKey = `apikey=${process.env.REACT_APP_API_KEY}`
 const _baseOffset = 310
+const limit = 9
 
 const _transformCharacter = (char) => {
 	return {
 		name: char.name,
 		description: char.description,
 		thumbnail: char.thumbnail.path + '.' + char.thumbnail.extension,
-		homepage: char.urls[0].url,
+		homepage: char.urls.filter(url => url.type === 'detail').length ? 
+			char.urls.filter(url => url.type === 'detail')[0].url :
+			char.urls.filter(url => url.type === 'wiki')[0].url,
 		wiki: char.urls[1].url,
 		id: char.id,
 		comics: char.comics.items
@@ -18,12 +26,13 @@ const _transformCharacter = (char) => {
 export const extendedApiSlice = apiSlice.injectEndpoints({
 	endpoints: builder => ({
 		getChars: builder.query({
-            query: ({offset = _baseOffset, limit = 9}) => `characters?limit=${limit}&offset=${offset}&${_apiKey}`,
-			transformResponse: res => {
-				return res.data.results.map(_transformCharacter)
-			},
-            providesTags: 'Char',
+      query: (offset) => `characters?limit=${limit}&offset=${offset}&${_apiKey}`,
+			transformResponse: res => res.data.results.map(_transformCharacter)
         }),
+		getCharsBySearch: builder.query({
+			query: ({offset, search}) => `characters?nameStartsWith=${search}&limit=${limit}&offset=${offset}&${_apiKey}`,
+			transformResponse: res => res.data.results.map(_transformCharacter)
+		}),
 		getCharById: builder.query({
 			query: id => `characters/${id}?${_apiKey}`,
 			transformResponse: res =>  _transformCharacter(res.data.results[0])
@@ -40,9 +49,28 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
 
 export const {
 	useGetCharsQuery,
+	useLazyGetCharsQuery,
+	useGetCharsBySearchQuery,
+	useLazyGetCharsBySearchQuery,
 	useGetCharByNameQuery,
 	useLazyGetCharByNameQuery,
 	useGetCharByIdQuery,
 	useLazyGetCharByIdQuery,
 } = extendedApiSlice
+
+const searchSlice = createSlice({
+    name: 'search',
+    initialState: '_',
+    reducers: {
+        changeSearch(state, action) {
+            return state = action.payload
+        }
+    }
+})
+
+export const { changeSearch } = searchSlice.actions
+
+export default searchSlice.reducer
+
+export const selectSearch = state => state.search
 

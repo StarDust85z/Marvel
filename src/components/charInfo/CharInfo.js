@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 
 import { useLazyGetCharByIdQuery } from '../../features/api/charsSlice';
@@ -30,7 +30,7 @@ const CharInfo = ({ charId }) => {
         return <Skeleton />
     }
 
-    const content = renderChar(char)
+    const content = useMemo(() => renderChar(char), [char])
 
     return (
         <div className="char__info">
@@ -40,7 +40,6 @@ const CharInfo = ({ charId }) => {
 }
 
 const View = ({char, comicsCount, setComicsCount}) => {
-    console.log(char);
     const {name, description, thumbnail, homepage, wiki, comics} = char;
 
     let imgStyle = thumbnail.endsWith('image_not_available.jpg') ? {'objectFit' : 'contain'} : {'objectFit' : 'cover'};
@@ -55,11 +54,12 @@ const View = ({char, comicsCount, setComicsCount}) => {
             )
         } else if (i === comicsCount) {
             return <li 
-                        style={{marginTop: 8, color: 'rgba(0,0,0,.3', cursor: 'pointer'}}
-                        key={i}
-                        onClick={() => {
-                            setComicsCount(comicsCount => comicsCount + 10)
-                        }}>more...</li>
+                style={{marginTop: 8, color: 'rgba(0,0,0,.3', cursor: 'pointer'}}
+                key={i}
+                onClick={() => setComicsCount(comicsCount => comicsCount + 10)}
+            >
+                more...
+            </li>
         } else {
             return ''
         }

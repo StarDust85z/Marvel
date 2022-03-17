@@ -1,12 +1,15 @@
 import { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+
 import { Link } from 'react-router-dom';
 import { useForm } from "react-hook-form";
 
-import { useLazyGetCharByNameQuery } from '../../features/api/charsSlice';
+import { useLazyGetCharByNameQuery, changeSearch } from '../../features/api/charsSlice';
 
 import './charSearch.scss'
 
 const CharSearch = () => {
+    const dispatch = useDispatch()
     
     const { 
         register, 
@@ -32,16 +35,17 @@ const CharSearch = () => {
     }] = useLazyGetCharByNameQuery()
 
     const onSubmit = async ({search}) => {
-        setSearch(search)
-        try {
-            await trigger(search).unwrap()
-        } catch(err) {
-            setError('search', {
-                    type: 'manual',
-                    message: 'The character was not found. Check the name and try again'
-                })
-            setValue(`search`, '')
-        }
+        dispatch(changeSearch(search))
+        // setSearch(search)
+        // try {
+        //     await trigger(search).unwrap()
+        // } catch(err) {
+        //     setError('search', {
+        //             type: 'manual',
+        //             message: 'The character was not found. Check the name and try again'
+        //         })
+        //     setValue(`search`, '')
+        // }
     }
 
     useEffect(() => {
@@ -69,11 +73,34 @@ const CharSearch = () => {
         )
     }
 
+    const renderLetters = () => {
+        console.log('render search')
+        let arr = ['_']
+        for (let i = 0; i < 26; i++) {
+            arr.push(String.fromCharCode(97 + i))
+        }
+        return arr.map(item => (
+            <li 
+                key={item}
+                onClick={() => dispatch(changeSearch(item))}
+                className='char__search-letter'
+            >
+                {item}
+            </li>
+        ))
+    }
+
     const content = renderResult(search)
+
+    const letters = renderLetters()
 
     return (
         <div className="char__search">
-            <div className="char__search-title">Or find a character by name:</div>
+            <div className="char__search-title">Pick a character's starting letter:</div>
+            <ul className="char__search-letters">
+                {letters}
+            </ul>
+            <div className="char__search-title">Or type in beginning of his name:</div>
             <form className="char__search-form" onSubmit={handleSubmit(onSubmit)}>
                 <input 
                     placeholder="example: Thor" 
@@ -85,7 +112,7 @@ const CharSearch = () => {
                             message: 'Minimum 3 letters'
                         }                    
                     })}
-                    onInput = {() => reset({...getValues})}
+                    onInput = {() => reset({...getValues})}     // optimize?
                 />                
                 <button type="submit" className="button button__main" disabled={isFetching}>
                     <div className="inner">find</div>

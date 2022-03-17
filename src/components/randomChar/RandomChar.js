@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 import { useLazyGetCharByIdQuery } from '../../features/api/charsSlice';
 
@@ -16,7 +17,6 @@ const RandomChar = () => {
     // const [ charId, setCharId ] = useState(1011400)
 
     const setRandomChar = () => {
-        console.log('hi');
         trigger(Math.floor(Math.random() * (1011400 - 1011000) + 1011000))
     }
 
@@ -59,7 +59,7 @@ const RandomChar = () => {
 }
 
 const View = ({char}) => {
-    const {name, description, thumbnail, homepage, wiki} = char
+    const {name, id, description, thumbnail, homepage, wiki} = char
 
     const descr = !description ? 'Description not avaible yet, check homepage to find out more' : 
     description.length > 200 ?  description.slice(0, 200) + '...' : description;
@@ -76,10 +76,21 @@ const View = ({char}) => {
                 <p className="randomchar__name">{name}</p>
                 <p className="randomchar__descr">{descr}</p>
                 <div className="randomchar__btns">
-                    <a href={homepage} className="button button__main">
+                    {/* <a href={homepage} className="button button__main">
                         <div className="inner">homepage</div>
-                    </a>
-                    <a href={wiki} className="button button__secondary">
+                    </a> */}
+                    <Link 
+                        to={`characters/${id}`}
+                        className="button button__main"
+                    >
+                        <div className="inner">To page</div>
+                    </Link>
+                    <a 
+                        href={homepage}
+                        target="_blank"
+                        className="button button__secondary"
+                        rel="noreferrer noopener"
+                    >
                         <div className="inner">Wiki</div>
                     </a>
                 </div>

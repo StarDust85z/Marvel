@@ -1,8 +1,9 @@
-import { useState, useRef, useMemo } from 'react';
+import { useState, useRef, useMemo, useEffect } from 'react';
+import { useSelector } from 'react-redux'
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
 
-import { useGetCharsQuery } from '../../features/api/charsSlice';
+import { useLazyGetCharsBySearchQuery, selectSearch } from '../../features/api/charsSlice';
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 
@@ -24,19 +25,37 @@ const cardAnimation = {
 }
 
 const CharList = (props) => {
+    const search = useSelector(selectSearch)
     
-    // const [charList, setCharList] = useState([]),
-    const [newItemLoading, setNewItemLoading] = useState(false),
-          [offset, setOffset] = useState(310),
-          [limit, setLimit] = useState(9),
+    const [charList, setCharList] = useState([]),
+          [offset, setOffset] = useState(),
           [charEnded, setCharEnded] = useState(false)
 
-    const {
-        data: chars = [],
+    const [trigger, {
         isLoading,
         isFetching,
-        isError
-    } = useGetCharsQuery({offset, limit})
+        isError,
+        isSuccess
+    }] = useLazyGetCharsBySearchQuery()
+
+    useEffect(() => {
+        setCharList([])
+        setCharEnded(false)
+        setOffset(0)
+        updateList(0)
+    }, [search])
+
+    const onListLoaded = (newCharList) => {
+        setCharList(charList => [...charList, ...newCharList])
+        setOffset(offset => offset + 9)
+        if (newCharList.length < 9) setCharEnded(true)
+    }
+
+    const updateList = (o = offset) => {        
+        trigger({ offset: o, search })
+            .unwrap()
+            .then(onListLoaded)
+    }
 
     let charRefs = useRef([])
 
@@ -52,11 +71,10 @@ const CharList = (props) => {
     }
 
     const renderItems = (arr) => {
-        console.log('render');
+        console.log('list render');
 
-        if (isLoading) return <Spinner />
+        if (isFetching && !offset) return <Spinner />
         if (isError) return <ErrorMessage />
-
 
         const items = arr.map(({name, thumbnail, id}, i) => {
             if (name.length > 30) name = name.slice(0,30) + '...';
@@ -104,7 +122,7 @@ const CharList = (props) => {
         )                
     }
 
-    const elements = useMemo(() => renderItems(chars), [chars, offset])
+    const elements = useMemo(() => renderItems(charList), [charList, isLoading])    // Optimize more?
 
     return (
         <div className="char__list">
@@ -112,8 +130,9 @@ const CharList = (props) => {
             <button 
                 className="button button__main button__long"
                 disabled={isFetching}
-                // style={{ 'display': charEnded ? 'none' : 'block' }}
-                onClick={() => setLimit(limit => limit + 9)}>
+                style={{ 'display': charEnded || isLoading ? 'none' : 'block' }}
+                onClick={() => updateList(offset)}
+            >
                 <div className="inner">load more</div>
             </button>
         </div>
