@@ -1,9 +1,9 @@
 import { useParams, Link } from 'react-router-dom';
-import { useEffect } from 'react';
-import { Helmet } from 'react-helmet';
+import { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 
 import { useLazyGetCharByIdQuery } from '../../features/api/charsSlice';
-import { useLazyGetComicByIdQuery } from '../../features/api/apiSlice';
+import { useLazyGetComicByIdQuery, useLazyGetComicsByCharIdQuery } from '../../features/api/apiSlice';
 
 import AppBanner from "../appBanner/AppBanner";
 import AnimatedPage from './AnimatedPage';
@@ -81,7 +81,44 @@ const ViewComic = ({comic}) => {
 }
 
 const ViewChar = ({char}) => {
-    const {name, description, thumbnail} = char
+    const {name, description, thumbnail, id} = char
+
+    const [comicsList, setComicsList] = useState([]),
+          [offset, setOffset] = useState(0),
+          [comicsEnded, setComicsEnded] = useState(false)
+
+    const [trigger, {
+        data: comics,
+        isFetching,
+        isError
+    }] = useLazyGetComicsByCharIdQuery()
+
+    useEffect(() => {
+        // trigger({id, offset})
+        updateList()
+         // eslint-disable-next-line
+    }, [])
+
+    const onListLoaded = (newComicsList) => {
+        // console.log(newComicsList);
+        setComicsList(comicsList => [...comicsList, ...newComicsList])
+        setOffset(offset => offset + 20)
+        if (newComicsList.length < 20) setComicsEnded(true)
+    }
+
+    const updateList = () => {
+        trigger({id, offset})
+            .unwrap()
+            .then(onListLoaded)
+    }
+
+    const comicItems = comicsList.length > 0 ? comicsList.map(item => {
+        return (
+            <li className="single-page__comics-item" key={item.id}>
+                <Link to={`../comics/${item.id}`}>{item.title}</Link>
+            </li>
+        )
+    }) : 'No comics avaible for that character'
 
     return (
         <div className="single-page">
@@ -98,6 +135,7 @@ const ViewChar = ({char}) => {
                 <p className="single-page__descr">
                     {description ? description : 'No description available yet'}
                 </p>
+                {comicItems}
             </div>
             <Link to=".." className="single-page__back">Back to all</Link>
         </div>

@@ -15,10 +15,10 @@ const _transformComic = (comic) => {
 }
 
 export const apiSlice = createApi({
-    reducerPath: 'api',
-    baseQuery: fetchBaseQuery({ baseUrl: 'https://gateway.marvel.com:443/v1/public/' }),
-    tagTypes: ['Char'],
-    endpoints: builder => ({
+	reducerPath: 'api',
+	baseQuery: fetchBaseQuery({ baseUrl: 'https://gateway.marvel.com:443/v1/public/' }),
+	tagTypes: ['Char'],
+	endpoints: builder => ({
 		getComics: builder.query({
 			query: (offset = 0) => `comics?orderBy=issueNumber&limit=8&offset=${offset}&${_apiKey}`,
 			transformResponse: res => res.data.results.map(_transformComic)
@@ -26,12 +26,18 @@ export const apiSlice = createApi({
 		getComicById: builder.query({
 			query: id => `comics/${id}?${_apiKey}`,
 			transformResponse: res => _transformComic(res.data.results[0])
+		}),
+		getComicsByCharId: builder.query({
+			query: ({id, offset = 0}) => `characters/${id}/comics?offset=${offset}&${_apiKey}`,
+			transformResponse: res => res.data.results.map(_transformComic)
 		})
-    })
+	})
 })
 
 export const { 
 	useGetComicByIdQuery,
 	useLazyGetComicByIdQuery,
-	useLazyGetComicsQuery
+	useLazyGetComicsQuery,
+	useGetComicsByCharIdQuery,
+	useLazyGetComicsByCharIdQuery
 } = apiSlice

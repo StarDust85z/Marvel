@@ -9,18 +9,22 @@ import ErrorMessage from '../errorMessage/ErrorMessage';
 
 import './charList.scss';
 
+const effects = {
+    duration: 3,
+    type: "spring",
+    ease: "easeInOut"
+}
+
 const cardAnimation = {
     hidden: {
-        y: 300,
+        y: 150,
         opacity: 0,
-        scale: 0.01,
-        // rotate: -360
+        scale: 0.01
     },
     visible: {
         y: 0,
         opacity: 1,
-        scale: 1,
-        // rotate: 0
+        scale: 1
     }
 }
 
@@ -61,10 +65,14 @@ const CharList = (props) => {
     const changeClass = (num) => {
         charRefs.current.forEach((item, i) => {
             if (num === i) {
-                item.classList.add('char__item_selected')
+                item.style.cssText = `
+                    transition: 0.3s transform;
+                    box-shadow: 0 5px 20px #9F0013;
+                    transform: translateY(-8px);
+                `
                 item.focus()
             } else {
-                item.classList.remove('char__item_selected')
+                item.style.cssText = `transition: 0.3s transform;`
             }
         })
     }
@@ -100,11 +108,7 @@ const CharList = (props) => {
                     whileInView="visible"
                     variants={cardAnimation}
                     viewport={{ once: true }}
-                    transition={{
-                        duration: 1,
-                        type: "spring",
-                        ease: "easeInOut"
-                    }}                 
+                    transition={effects}          
                 >
                     <img src={thumbnail} alt={name} style={imgStyle}/>
                     <div className="char__name">{name}</div>

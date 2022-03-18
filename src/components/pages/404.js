@@ -1,4 +1,4 @@
-import { Helmet } from "react-helmet"
+import { Helmet } from "react-helmet-async"
 
 import ErrorMessage from "../errorMessage/ErrorMessage"
 import { Link } from "react-router-dom"

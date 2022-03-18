@@ -25,7 +25,11 @@ const CharInfo = ({ charId }) => {
     const renderChar = (char) => {
         if (isFetching) return <Spinner />
         if (isError) return <ErrorMessage />
-        if (char) return <View char={char} comicsCount={comicsCount} setComicsCount={setComicsCount} />
+        if (char) return <View 
+            char={char}
+            comicsCount={comicsCount}
+            setComicsCount={setComicsCount}
+        />
 
         return <Skeleton />
     }
@@ -42,7 +46,8 @@ const CharInfo = ({ charId }) => {
 const View = ({char, comicsCount, setComicsCount}) => {
     const {name, description, thumbnail, homepage, id, comics} = char;
 
-    let imgStyle = thumbnail.endsWith('image_not_available.jpg') ? {'objectFit' : 'contain'} : {'objectFit' : 'cover'};
+    let imgStyle = thumbnail.endsWith('image_not_available.jpg') ? 
+        {'objectFit' : 'contain'} : {'objectFit' : 'cover'};
 
     const comicsItems = comics.length > 0 ? comics.map((item, i) => {
         if (i < comicsCount) {
@@ -50,7 +55,9 @@ const View = ({char, comicsCount, setComicsCount}) => {
             const k = keyArray[keyArray.length-1]
 
             return (
-                <li className="char__comics-item" key={k}><Link to={`comics/${k}`}>{item.name}</Link></li>
+                <li className="char__comics-item" key={k}>
+                    <Link to={`comics/${k}`}>{item.name}</Link>
+                </li>
             )
         } else if (i === comicsCount) {
             return <li 
@@ -58,7 +65,7 @@ const View = ({char, comicsCount, setComicsCount}) => {
                 key={i}
                 // onClick={() => setComicsCount(comicsCount => comicsCount + 10)}
             >
-                more on char's page..
+                more comics on the character's page..
             </li>
         } else {
             return ''
