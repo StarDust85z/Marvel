@@ -81,7 +81,7 @@ const ViewComic = ({comic}) => {
 }
 
 const ViewChar = ({char}) => {
-    const {name, description, thumbnail, id} = char
+    const {name, description, thumbnail, id, homepage} = char
 
     const [comicsList, setComicsList] = useState([]),
           [offset, setOffset] = useState(0),
@@ -89,7 +89,9 @@ const ViewChar = ({char}) => {
 
     const [trigger, {
         data: comics,
+        isLoading,
         isFetching,
+        isSuccess,
         isError
     }] = useLazyGetComicsByCharIdQuery()
 
@@ -101,9 +103,10 @@ const ViewChar = ({char}) => {
 
     const onListLoaded = (newComicsList) => {
         // console.log(newComicsList);
-        setComicsList(comicsList => [...comicsList, ...newComicsList])
+        if (newComicsList.length < 21) setComicsEnded(true)
+        setComicsList(comicsList => [...comicsList, ...newComicsList.slice(0, -1)])
         setOffset(offset => offset + 20)
-        if (newComicsList.length < 20) setComicsEnded(true)
+        
     }
 
     const updateList = () => {
@@ -112,13 +115,46 @@ const ViewChar = ({char}) => {
             .then(onListLoaded)
     }
 
-    const comicItems = comicsList.length > 0 ? comicsList.map(item => {
-        return (
-            <li className="single-page__comics-item" key={item.id}>
-                <Link to={`../comics/${item.id}`}>{item.title}</Link>
+    const renderComics = () => {
+        if (isFetching && comicsList.length === 0) {
+            return <p className='single-page__comics-more'>loading comics list..</p>
+        }
+        if (isError) return <ErrorMessage />
+
+        if (comicsList.length === 0 && !isFetching) {
+            return <p className='single-page__comics-more'>No comics avaible for that character</p>
+        }
+
+        const comicsMore = ( 
+            <li 
+                key={'more'}
+                className="single-page__comics-more"
+                style={{ 'display': comicsEnded ? 'none' : 'block' }}
+                onClick={() => updateList()}
+            >
+                load more comics
             </li>
         )
-    }) : 'No comics avaible for that character'
+
+        const comicsItems = [...comicsList.map(item => {
+            return (
+                <li className="single-page__comics-item" key={item.id}>
+                    <Link to={`../comics/${item.id}`}>{item.title}</Link>
+                </li>
+            )
+        }), comicsMore]
+
+        return (
+            <>           
+                <p className="single-page__comics-descr">{`Comics available:`}</p>
+                <ul className="single-page__comics-list">
+                    {comicsItems}
+                </ul>
+            </>
+        )
+    }
+
+    const comicItems = renderComics()
 
     return (
         <div className="single-page">
@@ -128,14 +164,28 @@ const ViewChar = ({char}) => {
                     content={`Page about ${name} character`}
                 />
                 <title>{`${name}`}</title>
-            </Helmet>                
-            <img src={thumbnail} alt={name} className="single-page__img"/>
+            </Helmet>            
+            <div className="single-page__img-block">
+                <img src={thumbnail} alt={name} className="single-page__img"/>
+                <div className="single-page__name">{name}</div>
+            </div>   
+            
             <div className="single-page__info">
-                <h2 className="single-page__name">{name}</h2>
+                {
+                    description ? <>
+                        <p className="single-page__title">{`About ${name}:`}</p>
+                        <p className="single-page__descr">
+                            {description ? description : 'No description available yet'}
+                        </p>
+                    </> : <p className="single-page__descr">No description available yet</p>                
+                }
+
+                <div className="single-page__comics">
+                    {comicItems}
+                </div>                
                 <p className="single-page__descr">
-                    {description ? description : 'No description available yet'}
+                    More info about character on the <a href={homepage}>official character wiki</a>
                 </p>
-                {comicItems}
             </div>
             <Link to=".." className="single-page__back">Back to all</Link>
         </div>

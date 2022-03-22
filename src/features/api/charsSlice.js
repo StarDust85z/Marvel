@@ -6,8 +6,7 @@ import {
 import { apiSlice } from './apiSlice'
 
 const _apiKey = `apikey=${process.env.REACT_APP_API_KEY}`
-const _baseOffset = 310
-const limit = 9
+const limit = 10
 
 const _transformCharacter = (char) => {
 	console.log(char);

@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
 import { useLazyGetComicsQuery } from '../../features/api/apiSlice'
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 
 import './comicsList.scss';
+import { effects, cardAnimation } from '../../features/animations'
 
 const ComicsList = () => {
     const [comicsList, setComicsList] = useState([]),
@@ -24,9 +26,11 @@ const ComicsList = () => {
     }, [])
 
     const onListLoaded = (newComicsList) => {
-        setComicsList(comicsList => [...comicsList, ...newComicsList])
+        if (newComicsList.length < 9) {
+            setComicsEnded(true)
+        }       
+        setComicsList(comicsList => [...comicsList, ...newComicsList.slice(0, -1)])
         setOffset(offset => offset + 8)
-        if (newComicsList.length < 8) setComicsEnded(true)
     }
 
     const updateList = () => {
@@ -42,21 +46,29 @@ const ComicsList = () => {
         if (isError) return <ErrorMessage />
 
         const listItems = arr.map(({title, thumbnail, id, price}, i) => {
-            if (title.length > 36) title = title.slice(0,36) + '...';
-            let imgStyle = thumbnail.endsWith('image_not_available.jpg') ? 
-                {'objectFit' : 'unset'} : {'objectFit' : 'cover'};
+            // if (i < arr.length - 1 && !comicsEnded) {
+                if (title.length > 36) title = title.slice(0,36) + '...';
+                let imgStyle = thumbnail.endsWith('image_not_available.jpg') ? 
+                    {'objectFit' : 'unset'} : {'objectFit' : 'cover'};
 
-            return (
-                <li className="comics__item"
-                    tabIndex={'0'}
-                    key={i}>
-                    <Link to={`/comics/${id}`}>
-                        <img src={thumbnail} alt={title} style={imgStyle} className="comics__item-img"/>
-                        <div className="comics__item-name">{title}</div>
-                        <div className="comics__item-price">{`${price}`}</div>
-                    </Link>
-                </li>
-            )
+                return (
+                    <motion.li className="comics__item"
+                        // tabIndex={'0'}
+                        key={i}
+                        initial="hidden"
+                        whileInView="visible"
+                        variants={cardAnimation}
+                        viewport={{ once: true }}
+                        transition={effects}   
+                    >
+                        <Link to={`/comics/${id}`}>
+                            <img src={thumbnail} alt={title} style={imgStyle} className="comics__item-img"/>
+                            <div className="comics__item-name">{title}</div>
+                            <div className="comics__item-price">{`${price}`}</div>
+                        </Link>
+                    </motion.li>
+                )
+            // } else return null
         })
 
         return (

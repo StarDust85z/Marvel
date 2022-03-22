@@ -8,25 +8,7 @@ import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 
 import './charList.scss';
-
-const effects = {
-    duration: 3,
-    type: "spring",
-    ease: "easeInOut"
-}
-
-const cardAnimation = {
-    hidden: {
-        y: 150,
-        opacity: 0,
-        scale: 0.01
-    },
-    visible: {
-        y: 0,
-        opacity: 1,
-        scale: 1
-    }
-}
+import { effects, cardAnimation } from '../../features/animations'
 
 const CharList = (props) => {
     const search = useSelector(selectSearch)
@@ -49,9 +31,9 @@ const CharList = (props) => {
     }, [search])
 
     const onListLoaded = (newCharList) => {
-        setCharList(charList => [...charList, ...newCharList])
-        setOffset(offset => offset + 9)
-        if (newCharList.length < 9) setCharEnded(true)
+        if (newCharList.length < 10) setCharEnded(true)
+        setCharList(charList => [...charList, ...newCharList.slice(0, -1)])
+        setOffset(offset => offset + 9)        
     }
 
     const updateList = (o = offset) => {        
@@ -82,6 +64,7 @@ const CharList = (props) => {
 
         if (isFetching && !offset) return <Spinner />
         if (isError) return <ErrorMessage />
+        if (!arr.length) return <h2>No matching characters..</h2>
 
         const items = arr.map(({name, thumbnail, id}, i) => {
             if (name.length > 30) name = name.slice(0,30) + '...';

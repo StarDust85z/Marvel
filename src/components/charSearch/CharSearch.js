@@ -83,7 +83,13 @@ const CharSearch = () => {
             <li 
                 key={item}
                 onClick={() => dispatch(changeSearch(item))}
+                onKeyPress={(e) => {
+                    if (e.key === "Enter") {
+                        dispatch(changeSearch(item))
+                    }
+                }} 
                 className='char__search-letter'
+                tabIndex={0}
             >
                 {item}
             </li>
@@ -100,7 +106,7 @@ const CharSearch = () => {
             <ul className="char__search-letters">
                 {letters}
             </ul>
-            <div className="char__search-title">Or type in beginning of his name:</div>
+            <div className="char__search-title">Or type in the beginning of his name:</div>
             <form className="char__search-form" onSubmit={handleSubmit(onSubmit)}>
                 <input 
                     placeholder="example: Thor" 
