@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
@@ -28,8 +28,10 @@ const ComicsList = () => {
     const onListLoaded = (newComicsList) => {
         if (newComicsList.length < 9) {
             setComicsEnded(true)
-        }       
-        setComicsList(comicsList => [...comicsList, ...newComicsList.slice(0, -1)])
+            setComicsList(comicsList => [...comicsList, ...newComicsList])
+        } else {
+            setComicsList(comicsList => [...comicsList, ...newComicsList.slice(0, -1)])
+        }
         setOffset(offset => offset + 8)
     }
 
@@ -42,7 +44,7 @@ const ComicsList = () => {
     const renderItems = (arr) => {
         console.log('Comics render!');
 
-        if (isLoading) return <Spinner />
+        if (isFetching && !comicsList.length) return <Spinner />
         if (isError) return <ErrorMessage />
 
         const listItems = arr.map(({title, thumbnail, id, price}, i) => {
@@ -78,7 +80,7 @@ const ComicsList = () => {
         )                
     }
 
-    const elements = renderItems(comicsList)
+    const elements = useMemo(() => renderItems(comicsList), [comicsList, isLoading])
 
     return (
         <div className="comics__list">            

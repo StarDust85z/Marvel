@@ -31,8 +31,12 @@ const CharList = (props) => {
     }, [search])
 
     const onListLoaded = (newCharList) => {
-        if (newCharList.length < 10) setCharEnded(true)
-        setCharList(charList => [...charList, ...newCharList.slice(0, -1)])
+        if (newCharList.length < 10) {
+            setCharEnded(true)
+            setCharList(charList => [...charList, ...newCharList])
+        } else {
+            setCharList(charList => [...charList, ...newCharList.slice(0, -1)])
+        }
         setOffset(offset => offset + 9)        
     }
 
@@ -49,11 +53,11 @@ const CharList = (props) => {
             if (num === i) {
                 item.style.cssText = `
                     transition: 0.3s transform;
-                    box-shadow: 0 5px 20px #9F0013;
+                    box-shadow: 0 5px 20px rgb(220, 100, 160);
                     transform: translateY(-8px);
                 `
                 item.focus()
-            } else {
+            } else if (item) {
                 item.style.cssText = `transition: 0.3s transform;`
             }
         })

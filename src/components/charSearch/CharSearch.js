@@ -18,11 +18,13 @@ const CharSearch = () => {
         setError,
         setValue,
         getValues,
+        clearErrors,
         formState: { errors, isSubmitSuccessful } 
     } = useForm({
         defaultValues: {
             search: ''
-        }
+        },
+        reValidateMode: 'onSubmit'
     });
 
     const [search, setSearch] = useState()
@@ -75,7 +77,7 @@ const CharSearch = () => {
 
     const renderLetters = () => {
         console.log('render search')
-        let arr = ['_']
+        let arr = []
         for (let i = 0; i < 26; i++) {
             arr.push(String.fromCharCode(97 + i))
         }
@@ -109,7 +111,7 @@ const CharSearch = () => {
             <div className="char__search-title">Or type in the beginning of his name:</div>
             <form className="char__search-form" onSubmit={handleSubmit(onSubmit)}>
                 <input 
-                    placeholder="example: Thor" 
+                    placeholder="example: Spider-Man" 
                     className="char__search-input"
                     {...register("search", { 
                         required: 'This field is required',
@@ -118,13 +120,25 @@ const CharSearch = () => {
                             message: 'Minimum 3 letters'
                         }                    
                     })}
-                    onInput = {() => reset({...getValues})}     // optimize?
+                    // onInput = {() => reset({...getValues})}     // optimize?
+                    onInput = {() => clearErrors()}
                 />                
                 <button type="submit" className="button button__main" disabled={isFetching}>
                     <div className="inner">find</div>
                 </button>
-                {content}
+                <div className="char__search-error">
+                    {errors.search?.message}
+                </div> 
+                {/* {content} */}
+
             </form>
+            <div className="char__search-title">Reset search:</div>
+            <button
+                className="button button__secondary"
+                onClick={() => dispatch(changeSearch('_'))}
+            >
+                <div className="inner">reset</div>
+            </button>
         </div>
         
     )

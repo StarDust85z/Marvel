@@ -9,8 +9,6 @@ import Skeleton from '../skeleton/Skeleton';
 import './charInfo.scss';
 
 const CharInfo = ({ charId }) => {
-    const [comicsCount, setComicsCount] = useState(10)
-    
     const [trigger, {
         data: char,
         isFetching,
@@ -18,8 +16,7 @@ const CharInfo = ({ charId }) => {
     }] = useLazyGetCharByIdQuery()
 
     useEffect(() => {
-        if (charId) trigger(charId)
-        setComicsCount(10)        
+        if (charId) trigger(charId)       
     }, [trigger, charId])
 
     const renderChar = (char) => {
@@ -27,14 +24,12 @@ const CharInfo = ({ charId }) => {
         if (isError) return <ErrorMessage />
         if (char) return <View 
             char={char}
-            comicsCount={comicsCount}
-            setComicsCount={setComicsCount}
         />
 
         return <Skeleton />
     }
 
-    const content = useMemo(() => renderChar(char), [char])
+    const content = useMemo(() => renderChar(char), [char, isFetching])
 
     return (
         <div className="char__info">
@@ -43,14 +38,14 @@ const CharInfo = ({ charId }) => {
     )
 }
 
-const View = ({char, comicsCount, setComicsCount}) => {
+const View = ({ char }) => {
     const {name, description, thumbnail, homepage, id, comics} = char;
 
     let imgStyle = thumbnail.endsWith('image_not_available.jpg') ? 
         {'objectFit' : 'contain'} : {'objectFit' : 'cover'};
 
     const comicsItems = comics.length > 0 ? comics.map((item, i) => {
-        if (i < comicsCount) {
+        if (i < 10) {
             const keyArray = item.resourceURI.split('/')
             const k = keyArray[keyArray.length-1]
 
@@ -59,16 +54,15 @@ const View = ({char, comicsCount, setComicsCount}) => {
                     <Link to={`comics/${k}`}>{item.name}</Link>
                 </li>
             )
-        } else if (i === comicsCount) {
+        } else if (i === 10) {
             return <li 
-                style={{marginTop: 8, color: 'rgba(0,0,0,.3'}}
+                style={{marginTop: 10, color: 'rgba(0,0,0,.5', fontSize:14}}
                 key={i}
-                // onClick={() => setComicsCount(comicsCount => comicsCount + 10)}
             >
                 more comics on the character's page..
             </li>
         } else {
-            return ''
+            return null
         }
     }) : 'No comics avaible for that character'
     

@@ -3,7 +3,7 @@
 .app {
     &__banner {
         width: 100%;
-        background-color: $dark;
+        background: $dark-gradient;
         height: 100px;
         padding: 0 25px 0 45px;
         display: grid;

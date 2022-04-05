@@ -9,6 +9,7 @@ import AppBanner from "../appBanner/AppBanner";
 import AnimatedPage from './AnimatedPage';
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
+import Page404 from '../pages/404'
 
 import './SinglePage.scss';
 
@@ -40,7 +41,7 @@ const SinglePage = () => {
     const renderPage = () => {
         console.log(char, comic);
         if (isCharFetching || isComicFetching) return <Spinner />
-        if (isCharError || isComicError) return <ErrorMessage />
+        if (isCharError || isComicError) return <Page404 />
         if (char) return <ViewChar char={char} />
         if (comic) return <ViewComic comic={comic} />
     }
@@ -88,25 +89,24 @@ const ViewChar = ({char}) => {
           [comicsEnded, setComicsEnded] = useState(false)
 
     const [trigger, {
-        data: comics,
-        isLoading,
         isFetching,
-        isSuccess,
         isError
     }] = useLazyGetComicsByCharIdQuery()
 
     useEffect(() => {
-        // trigger({id, offset})
         updateList()
          // eslint-disable-next-line
     }, [])
 
     const onListLoaded = (newComicsList) => {
-        // console.log(newComicsList);
-        if (newComicsList.length < 21) setComicsEnded(true)
-        setComicsList(comicsList => [...comicsList, ...newComicsList.slice(0, -1)])
-        setOffset(offset => offset + 20)
+        if (newComicsList.length < 21) {
+            setComicsEnded(true)
+            setComicsList(comicsList => [...comicsList, ...newComicsList])
+        } else {
+            setComicsList(comicsList => [...comicsList, ...newComicsList.slice(0, -1)])
+        }
         
+        setOffset(offset => offset + 20)        
     }
 
     const updateList = () => {
@@ -122,17 +122,17 @@ const ViewChar = ({char}) => {
         if (isError) return <ErrorMessage />
 
         if (comicsList.length === 0 && !isFetching) {
-            return <p className='single-page__comics-more'>No comics avaible for that character</p>
+            return <p className='single-page__comics-more'>No comics available for that character</p>
         }
 
         const comicsMore = ( 
             <li 
                 key={'more'}
-                className="single-page__comics-more"
+                className={`single-page__comics-more btn ${isFetching ? 'loading' : ''}`}
                 style={{ 'display': comicsEnded ? 'none' : 'block' }}
                 onClick={() => updateList()}
             >
-                load more comics
+                {isFetching ? 'loading...' : 'load more comics'}
             </li>
         )
 
@@ -147,7 +147,9 @@ const ViewChar = ({char}) => {
         return (
             <>           
                 <p className="single-page__comics-descr">{`Comics available:`}</p>
-                <ul className="single-page__comics-list">
+                <ul
+                    className={`single-page__comics-list ${comicsList.length > 14 ? 'single-page__comics-scroll' : ''}`}
+                >
                     {comicsItems}
                 </ul>
             </>

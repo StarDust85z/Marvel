@@ -17,6 +17,10 @@ const RandomChar = () => {
 
     const setRandomChar = () => {
         trigger(Math.floor(Math.random() * (1011400 - 1011000) + 1011000))
+            .unwrap()
+            .catch(e => {
+                trigger(Math.floor(Math.random() * (1011400 - 1011000) + 1011000))
+            })
     }
 
     useEffect(() => {
@@ -60,7 +64,7 @@ const RandomChar = () => {
 const View = ({char}) => {
     const {name, id, description, thumbnail, homepage} = char
 
-    const descr = !description ? 'Description not avaible yet, check wiki to find out more' : 
+    const descr = !description ? "Description not avaible yet, look for comics on the character's page or read more info on the wiki page" : 
     description.length > 200 ?  description.slice(0, 200) + '...' : description;
 
     const imgStyle = thumbnail?.indexOf('image_not_available.jpg') !== -1 ? {'objectFit': 'contain'} : {'objectFit': 'unset'};

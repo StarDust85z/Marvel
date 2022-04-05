@@ -1,9 +1,9 @@
-import img from './error.gif'
+import img from './hydra-shield.png'
 
 const ErrorMessage = () => {
     return (
         <img style = {{ display: 'block', width: '250px', height:'250px',
-            objectFit: 'contain', margin: '0 auto'}} src={img} alt='Error Loading Char' />
+            objectFit: 'contain', margin: '0 auto'}} src={img} alt='Error Loading Data' />
     )
 }
 

@@ -9,6 +9,13 @@
     box-sizing: border-box;
 }
 
+body {
+    // background: linear-gradient(250deg, #bf9cf7, #e89bce);
+    background: linear-gradient(250deg, #dfd2f4, #ebc8df);
+    min-height: 100vh;
+    min-width: 100vw;
+}
+
 ul,
 li,
 dl {

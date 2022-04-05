@@ -15,9 +15,10 @@ const Page404 = () => {
                 <title>Page not found</title>
             </Helmet>
             <div>
-                <ErrorMessage/>
-                <p style={{'textAlign': 'center', 'fontWeight': 'bold', 'fontSize': '24px'}}>Page doesn't exist</p>
-                <Link style={{'display': 'block', 'textAlign': 'center', 'fontWeight': 'bold', 'fontSize': '24px', 'marginTop': '30px', 'cursor': 'pointer'}} to="/">Back to main page</Link>            
+                <p style={{'height': 100}} />
+                <ErrorMessage  style={{'marginTop': 80}} />
+                <p style={{'textAlign': 'center', 'fontWeight': 'bold', 'fontSize': '24px', 'marginTop': 30}}>404. Hydra has attacked that page..</p>
+                <Link style={{'display': 'block', 'textAlign': 'center', 'fontWeight': 'bold', 'fontSize': '24px', 'marginTop': '30px', 'cursor': 'pointer'}} to="/">Back to the main page</Link>            
             </div>
         </AnimatedPage>        
     )

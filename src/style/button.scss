@@ -5,6 +5,7 @@
     color: #fff;
     text-align: center;
     text-transform: uppercase;
+    line-height: 18px;
     font-size: 14px;
     transition: 0.3s transform;
     border: none;
@@ -18,7 +19,6 @@
     .inner {
         position: relative;
         background-color: $main-color;
-        line-height: 18px;
         padding: 0 18px;
         transition: none;
         &::before {
