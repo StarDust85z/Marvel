@@ -1,4 +1,4 @@
-@import '../../style/variables.scss';
+@import '../../style/variables';
 
 .char {
     &__search {
@@ -6,9 +6,9 @@
         width: 425px;
         min-height: 127px;
         padding: 25px;
-        box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.25);
+        box-shadow: 0 0 20px rgb(0 0 0 / 25%);
         z-index: 5;
-        background: $bright-gradient-small;
+        background: $background-search;
 
         &-letters {
             display: flex;
@@ -17,17 +17,16 @@
             margin: 12px 0 20px;
 
             .char__search-letter {
-
                 text-align: center;
                 display: block;
-                color: #333;
+                color: $ff-color;
                 padding: 3px;
                 position: relative;
-                transform: skewX(-5deg);
+                transform: skewX(-15deg);
                 text-transform: uppercase;
                 cursor: pointer;
                 transition: transform 0.3s;
-                background: $bright-gradient;
+                // background: $background-small;
 
                 &::before {
                     content: "";
@@ -37,13 +36,13 @@
                     display: block;
                     width: 100%;
                     height: 100%;
-                    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.25);
-                    transform: skewX(-15deg);
+                    box-shadow: 0 0 5px rgb(0 0 0 / 25%);
+                    // transform: skewX(-15deg);
                 }
 
                 &:hover, &:focus {
                     transform: skewX(-15deg) translateY(-3px);
-                    box-shadow: 0px 5px 3px $shadow-active;
+                    box-shadow: 0 5px 3px $shadow-active;
                 }
 
             }
@@ -70,20 +69,22 @@
             margin-right: 24px;
             width: 250px;
             height: 38px;
-            padding: 10px 10px;
+            padding: 10px;
             line-height: 25px;
             border: none;
-            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+            box-shadow: 0 4px 4px rgb(0 0 0 / 25%);
             font-size: 14px;
             line-height: 16px;
-            background: $bright-gradient;
+            background: $background-search;
+            color: inherit;
 
             &:focus {
                 outline: none;
             }
 
-            &:placeholder {
-                color: rgba(0, 0, 0, 0.5);
+            &::placeholder {
+                color: $inactive;
+                font-style: italic;
             }
 
             // &:focus ~ * ~ div {

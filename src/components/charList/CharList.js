@@ -27,7 +27,7 @@ const CharList = (props) => {
 
     useEffect(() => {
         dispatch(changeSearch('_'))
-    })
+    }, [])
 
     useEffect(() => {
         setCharList([])
@@ -119,7 +119,7 @@ const CharList = (props) => {
         )                
     }
 
-    const elements = useMemo(() => renderItems(charList), [charList, isLoading])    // Optimize more?
+    const elements = useMemo(() => renderItems(charList), [charList, isLoading])
 
     return (
         <div className="char__list">

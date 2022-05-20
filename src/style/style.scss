@@ -10,8 +10,9 @@
 }
 
 body {
-    // background: linear-gradient(250deg, #bf9cf7, #e89bce);
-    background: linear-gradient(250deg, #dfd2f4, #ebc8df);
+    color: $ff-color;
+    text-shadow: 1px 1px #102;
+    background: $background-base;
     min-height: 100vh;
     min-width: 100vw;
 }
@@ -37,6 +38,7 @@ a {
     text-decoration: none;
     color: inherit;
     display: inline-block;
+
     &:hover {
         text-decoration: none;
         color: inherit;
@@ -50,19 +52,20 @@ p {
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
+    appearance: none;
     margin: 0; 
 }
 
 .app {
     width: 1100px;
     margin: 0 auto;
-    padding: 50px 0 50px 0;
+    padding: 50px 0;
     position: relative;
+
     .bg-decoration {
         position: absolute;
         right: -174px;
-        bottom: -70px;
+        bottom: -52px;
         z-index: -1;
     }
 }
@@ -80,9 +83,11 @@ main {
     0% {
         opacity: 1
     }
+
     50% {
         opacity: .4
     }
+
     100% {
         opacity: 1
     }

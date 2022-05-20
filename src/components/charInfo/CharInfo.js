@@ -55,10 +55,7 @@ const View = ({ char }) => {
                 </li>
             )
         } else if (i === 10) {
-            return <li 
-                style={{marginTop: 10, color: 'rgba(0,0,0,.5', fontSize:14}}
-                key={i}
-            >
+            return <li key={i}>
                 more comics on the character's page..
             </li>
         } else {

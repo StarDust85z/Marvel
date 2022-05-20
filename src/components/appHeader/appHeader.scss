@@ -1,18 +1,21 @@
-@import '../../style/variables.scss';
+@import '../../style/variables';
 
 .app {
     &__header {
         display: flex;
         justify-content: space-between;
     }
+
     &__title {
         font-weight: bold;
         font-size: 28px;
         line-height: 37px;
+
         span {
-            color: $main-color;
+            color: $main-text;
         }
     }
+
     &__menu {
         ul {
             display: flex;
@@ -20,10 +23,15 @@
             font-weight: bold;
             font-size: 24px;
             line-height: 32px;
+
             li {
                 margin: 0 8px;
+                
+                a.active {
+                    color: $main-text;
+                }
                 a:hover {
-                    color: $main-color;
+                    color: $main-text;
                 }
             }
         }

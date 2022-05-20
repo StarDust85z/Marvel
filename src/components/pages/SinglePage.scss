@@ -1,4 +1,4 @@
-@import '../../style/variables.scss';
+@import '../../style/variables';
 
 .single-page {
     margin-top: 50px;
@@ -6,113 +6,141 @@
     grid-template-columns: 333px 550px auto;
     column-gap: 50px;
     align-items: start;
-    &__img {
 
+    &__img {
         width: 293px;
+
         // height: 450px;
         &-block {
-            background: $bright-gradient-small;
+            // background: $bright-gradient-small;
             padding: 20px;
-            box-shadow: 0px 0px 20px rgb(0 0 0 / 25%);
+            box-shadow: 0 0 20px rgb(0 0 0 / 25%);
         }
     }
+
     &__name {
         margin-top: 18px;
         font-weight: bold;
         font-size: 34px;
         line-height: 40px;
         text-transform: uppercase;
+
         // text-align: center;
     }
+
     &__title {
         font-size: 24px;
         line-height: 32px;
     }
+
     &__descr {
         font-size: 18px;
         line-height: 24px;
+
         &:not(:first-child) {
             margin-top: 20px;
         }        
+
         a {
             font-weight: bold;
+
             &:hover {
-                color: $main-color;
+                color: $main-text;
             }
         }
     }
+
     &__price {
         font-weight: bold;
         font-size: 24px;
         line-height: 32px;
-        color: $main-color;
+        // color: $main-text;
         margin-top: 25px;
     }
+
     &__back {
         justify-self: end;
         font-weight: bold;
         font-size: 20px;
         line-height: 24px;
+
         &:hover {
-            color: $main-color;
+            color: $main-text;
         }
     }
+
     &__info {
-        background: $bright-gradient-small;
+        // background: $bright-gradient-small;
         padding: 25px;
-        box-shadow: 0px 0px 20px rgb(0 0 0 / 25%);
+        box-shadow: 0 0 20px rgb(0 0 0 / 25%);
     }
+
     &__comics {
         &-descr {
             margin-top: 25px;
             font-size: 24px;
             line-height: 32px;
         }
+
         &-list {
             overflow-y: hidden;
             padding: 0 5px 5px 0;
             margin-top: 5px;
             max-height: 500px;
+            box-shadow: 0 4px 4px rgb(0 0 0 / 10%);
         }
+
         &-scroll {
             overflow-y: scroll;
+
             &::-webkit-scrollbar {
                 border-radius: 10px;
-                background: rgb(249, 242, 247);
+                // background: rgb(249 242 247);
+                background: $inactive;
             }
+
             &::-webkit-scrollbar-thumb {
                 border-radius: 10px;
-                background: rgb(142, 102, 136);
+                // background: rgb(142 102 136);
+                background: $dark-gradient;
             }   
         }
 
         &-item {
             & a {
-                background: $bright-gradient;
+                // background: $bright-gradient;
                 width: 100%;
-                padding: 0px 10px;
+                padding: 0 10px;
                 line-height: 25px;
-                box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+                box-shadow: 0 4px 4px rgb(0 0 0 / 25%);
                 margin-top: 10px;
                 font-size: 14px;
                 font-weight: 400;
                 transition: transform 0.3s;
+
                 &:hover, &:focus {
                     transform: translateY(-3px);
-                    box-shadow: 0px 3px 5px $shadow-active;
+                    box-shadow: 0 3px 5px $shadow-active;
                 }
             }
         }
+
         &-more {
             margin-top: 10px;
             font-size: 16px;
             font-weight: 400;
-            color: rgba(0,0,0, .35);
+            color: $inactive;
+            text-shadow: none;
+            margin-left: 5px;
+            font-style: italic;
+
             &.btn {
                 cursor: pointer;
+
                 &:hover {
                     color: $main-color;
                 }
+
                 &.loading {
                     animation: glowing 1s linear infinite;
                 }
@@ -122,7 +150,7 @@
 }
 
 @keyframes glowing {
-    0% { color: $main-color; }
+    0% { color: $main-text; }
     50% { color: $grey; }
-    100% { color: $main-color; }
+    100% { color: $main-text; }
 }

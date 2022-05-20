@@ -1,9 +1,30 @@
 $main-color: #9F0013;
+// $main-text: #c50e24;
+$main-text: #e3223a;
+
 $dark: #232222;
-$grey: #5C5C5C;
+// $grey: #5C5C5C;
+$grey: #443940;
+$ff-color: #e1d7ff;
+
+
+
+$background-base: linear-gradient(107.32deg, #804BD8 5.53%, #544AD8 97.3%);
+// $background-base: linear-gradient(107.32deg, #926ad4 5.53%, #7872d3 97.3%);
+
+// $background-small: linear-gradient(107.32deg, #946cd5 5.53%, #9691d2 97.3%);
+$background-small: linear-gradient(107.32deg, #6b4ad8 5.53%, #594ad8 97.3%);
+
+// $background-search: linear-gradient(107.32deg, #9e8ed0 5.53%, #9891d2 97.3%);
+$background-search: linear-gradient(107.32deg, #6b4ad8 5.53%, #594ad8 97.3%);
+
 $dark-gradient: linear-gradient(250deg, #232028, #443940);
-$bright-gradient: linear-gradient(250deg, #dfd2f4, #ebc8df);
-$bright-gradient-small: linear-gradient(250deg, #e3cfee, #e8cae4);
-$bright-gradient-blink: linear-gradient(250deg, #bea3c0, #c9a9cd);
+// $bright-gradient: linear-gradient(250deg, #dfd2f4, #ebc8df);
+// $bright-gradient-small: linear-gradient(250deg, #e3cfee, #e8cae4);
+// $bright-gradient-blink: linear-gradient(250deg, #bea3c0, #c9a9cd);
+$bright-gradient-blink: linear-gradient(250deg, #bea3c0a0, #c9a9cda3);
+
 // $shadow-active: rgba(200, 100, 150, .5);
-$shadow-active: rgb(220, 100, 160);
+$shadow-active: rgb(220 100 160);
+
+$inactive: rgba(255 255 255 / 40%);

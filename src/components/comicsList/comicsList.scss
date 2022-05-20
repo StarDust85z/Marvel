@@ -1,26 +1,30 @@
-@import '../../style/variables.scss';
+@import '../../style/variables';
 
 .comics {
     &__list {
         margin-top: 45px;
     }
+
     &__grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, 225px);
         justify-content: space-between;
         row-gap: 55px;
     }
+
     &__item {
-        
         position: relative;
+
         &-img {
-            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25);
+            box-shadow: 5px 5px 10px rgb(0 0 0 / 25%);
             width: 225px;
             height: 345px;
         }
+
         &-name {
             padding: 8px 15px;
             text-transform: uppercase;
+
             // margin-top: 10px;
             font-weight: bold;
             font-size: 14px;
@@ -31,30 +35,36 @@
             text-transform: uppercase;
             color: #fff;
         }
+
         &-price {
             margin-top: 5px;
             font-weight: bold;
             font-size: 14px;
             line-height: 18px;
-            color: rgba(0, 0, 0, 0.6);
+            color: rgb(0 0 0 / 60%);
             position: absolute;
             right: 10px;
             bottom: 5px;
             color: #fff;
+
             // text-transform: uppercase;
         }
+
         & a {
             transition: 0.3s transform;
             width: 225px;
             height: 445px;
-            box-shadow: 5px 5px 10px rgba(0, 0, 0, .25);
+            box-shadow: 5px 5px 10px rgb(0 0 0 / 25%);
             background: $dark-gradient;
+
             &:hover, &:focus {
                 // display: block;
                 // position: absolute;
                 transform: translateY(-5px);
+
                 // box-shadow: 0px 5px 20px $main-color;
-                box-shadow: $shadow-active 0px 5px 25px;
+                box-shadow: $shadow-active 0 5px 25px;
+
                 // rgb(149, 40, 53)
             }
         }

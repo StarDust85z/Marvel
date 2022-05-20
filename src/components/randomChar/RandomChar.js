@@ -25,10 +25,10 @@ const RandomChar = () => {
 
     useEffect(() => {
         setRandomChar()
-        const timerId = setInterval(setRandomChar, 60000)
+        // const timerId = setInterval(setRandomChar, 60000)
 
         return () => {
-            clearInterval(timerId)
+            // clearInterval(timerId)
         }
         // eslint-disable-next-line
     }, [])
