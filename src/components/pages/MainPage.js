@@ -12,6 +12,7 @@ import decoration from '../../resources/img/vision.png';
 
 const MainPage = () => {
     const [char, setChar] = useState(null)
+    // const [search, setSearch] = useState('null')
 
     const onCharSelected = id => setChar(id)
 

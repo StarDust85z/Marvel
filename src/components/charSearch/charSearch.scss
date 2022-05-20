@@ -41,9 +41,9 @@
                     transform: skewX(-15deg);
                 }
 
-                &:hover {
+                &:hover, &:focus {
                     transform: skewX(-15deg) translateY(-3px);
-                    box-shadow: 0px 5px 3px $main-color;
+                    box-shadow: 0px 5px 3px $shadow-active;
                 }
 
             }

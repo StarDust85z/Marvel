@@ -8,7 +8,7 @@ import { useLazyGetCharByNameQuery, changeSearch } from '../../features/api/char
 
 import './charSearch.scss'
 
-const CharSearch = () => {
+const CharSearch = ({setMainSearch}) => {
     const dispatch = useDispatch()
     
     const { 
@@ -27,7 +27,7 @@ const CharSearch = () => {
         reValidateMode: 'onSubmit'
     });
 
-    const [search, setSearch] = useState()
+    // const [search, setSearch] = useState()
 
     const [trigger, {
         data: charFound,
@@ -38,6 +38,7 @@ const CharSearch = () => {
 
     const onSubmit = async ({search}) => {
         dispatch(changeSearch(search))
+        // setMainSearch(search)
         // setSearch(search)
         // try {
         //     await trigger(search).unwrap()
@@ -98,7 +99,7 @@ const CharSearch = () => {
         ))
     }
 
-    const content = renderResult(search)
+    // const content = renderResult(search)
 
     const letters = renderLetters()
 

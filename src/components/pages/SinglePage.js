@@ -116,14 +116,14 @@ const ViewChar = ({char}) => {
     }
 
     const renderComics = () => {
-        if (isFetching && comicsList.length === 0) {
-            return <p className='single-page__comics-more'>loading comics list..</p>
-        }
+        // if (isFetching && comicsList.length === 0) {
+        //     return <p className='single-page__comics-more'>loading comics list..</p>
+        // }
         if (isError) return <ErrorMessage />
 
-        if (comicsList.length === 0 && !isFetching) {
-            return <p className='single-page__comics-more'>No comics available for that character</p>
-        }
+        // if (comicsList.length === 0 && !isFetching) {
+        //     return <p className='single-page__comics-more'>No comics available for that character</p>
+        // }
 
         const comicsMore = ( 
             <li 
@@ -145,18 +145,31 @@ const ViewChar = ({char}) => {
         }), comicsMore]
 
         return (
-            <>           
-                <p className="single-page__comics-descr">{`Comics available:`}</p>
-                <ul
-                    className={`single-page__comics-list ${comicsList.length > 14 ? 'single-page__comics-scroll' : ''}`}
+            <>  
+                { comicsList.length === 0 && !isFetching ?
+                    <p className='single-page__comics-more'>No comics available for that character</p>
+                : null }       
+                { isFetching && comicsList.length === 0 ?
+                    <p className='single-page__comics-more'>loading comics list..</p>
+                : null }  
+                { comicsList.length ? 
+                    <p className="single-page__comics-descr">{`Comics available:`}</p>
+                : null }
+                <ul 
+                    style={{
+                        height: comicsList.length * 36,
+                        transition: comicsList.length > 14 ? 
+                            `height ${ 0.25 * comicsList.length }s`
+                        : `height 3.5s`,
+                    }}
+                    className={`single-page__comics-list` + 
+                        `${comicsList.length > 14 ? ' single-page__comics-scroll' : ''}`}
                 >
                     {comicsItems}
                 </ul>
             </>
         )
     }
-
-    const comicItems = renderComics()
 
     return (
         <div className="single-page">
@@ -177,14 +190,14 @@ const ViewChar = ({char}) => {
                     description ? <>
                         <p className="single-page__title">{`About ${name}:`}</p>
                         <p className="single-page__descr">
-                            {description ? description : 'No description available yet'}
+                            {description}
                         </p>
                     </> : <p className="single-page__descr">No description available yet</p>                
                 }
 
                 <div className="single-page__comics">
-                    {comicItems}
-                </div>                
+                    {renderComics()}
+                </div>             
                 <p className="single-page__descr">
                     More info about character on the <a href={homepage}>official character wiki</a>
                 </p>

@@ -2,8 +2,9 @@ import { useState, useRef, useMemo, useEffect } from 'react';
 import { useSelector } from 'react-redux'
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
+import { useDispatch } from 'react-redux';
 
-import { useLazyGetCharsBySearchQuery, selectSearch } from '../../features/api/charsSlice';
+import { useLazyGetCharsBySearchQuery, changeSearch, selectSearch } from '../../features/api/charsSlice';
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 
@@ -11,6 +12,7 @@ import './charList.scss';
 import { effects, cardAnimation } from '../../features/animations'
 
 const CharList = (props) => {
+    const dispatch = useDispatch()
     const search = useSelector(selectSearch)
     
     const [charList, setCharList] = useState([]),
@@ -22,6 +24,10 @@ const CharList = (props) => {
         isFetching,
         isError
     }] = useLazyGetCharsBySearchQuery()
+
+    useEffect(() => {
+        dispatch(changeSearch('_'))
+    })
 
     useEffect(() => {
         setCharList([])
@@ -53,12 +59,13 @@ const CharList = (props) => {
             if (num === i) {
                 item.style.cssText = `
                     transition: 0.3s transform;
-                    box-shadow: 0 5px 20px rgb(220, 100, 160);
                     transform: translateY(-8px);
-                `
+                ` 
+                item.classList.add('active')
                 item.focus()
             } else if (item) {
-                item.style.cssText = `transition: 0.3s transform;`
+                item.style.cssText = 'transition: 0.3s transform;'
+                item.classList.remove('active')
             }
         })
     }
@@ -68,7 +75,7 @@ const CharList = (props) => {
 
         if (isFetching && !offset) return <Spinner />
         if (isError) return <ErrorMessage />
-        if (!arr.length) return <h2>No matching characters..</h2>
+        if (!arr.length) return <h2 style={{textAlign: 'center'}}>No matching characters...</h2>
 
         const items = arr.map(({name, thumbnail, id}, i) => {
             if (name.length > 30) name = name.slice(0,30) + '...';

@@ -58,6 +58,11 @@ export const {
 	useLazyGetCharByIdQuery,
 } = extendedApiSlice
 
+const initialState = {
+	search: '_',
+	selected: null
+}
+
 const searchSlice = createSlice({
     name: 'search',
     initialState: '_',
