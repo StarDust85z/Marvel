@@ -1,11 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
 
 import { apiSlice } from './features/api/apiSlice'
-import search from './features/api/charsSlice'
+import chars from './features/api/charsSlice'
 
 export default configureStore({
   reducer: {
-    search,
+    chars,
     [apiSlice.reducerPath]: apiSlice.reducer
   },
   middleware: getDefaultMiddleware =>

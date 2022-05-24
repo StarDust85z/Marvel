@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
 import { useDispatch } from 'react-redux';
 
-import { useLazyGetCharsBySearchQuery, changeSearch, selectSearch } from '../../features/api/charsSlice';
+import { useLazyGetCharsBySearchQuery, changeSearch, changeSelected, selectSearch } from '../../features/api/charsSlice';
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 
@@ -27,6 +27,8 @@ const CharList = (props) => {
 
     useEffect(() => {
         dispatch(changeSearch('_'))
+
+        return () => dispatch(changeSearch('_'))
     }, [])
 
     useEffect(() => {
@@ -35,6 +37,10 @@ const CharList = (props) => {
         setOffset(0)
         updateList(0)
     }, [search])
+
+    const onCharSelect = (id) => {
+        dispatch(changeSelected(id))
+    }
 
     const onListLoaded = (newCharList) => {
         if (newCharList.length < 10) {
@@ -89,12 +95,12 @@ const CharList = (props) => {
                     tabIndex={'0'}
                     ref={elem => charRefs.current[i] = elem}
                     onClick={() => {
-                        props.onCharSelected(id);
+                        onCharSelect(id);
                         changeClass(i);
                     }}
                     onKeyPress={(e) => {
                         if (e.key === ' ' || e.key === "Enter") {
-                            props.onCharSelected(id);
+                            onCharSelect(id);
                             changeClass(i);
                         }
                     }}   
@@ -136,6 +142,6 @@ const CharList = (props) => {
     )    
 }
 
-CharList.propTypes = { onCharSelected: PropTypes.func.isRequired }
+// CharList.propTypes = { onCharSelected: PropTypes.func.isRequired }
 
 export default CharList;

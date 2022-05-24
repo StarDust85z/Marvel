@@ -1,7 +1,8 @@
 import { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux'
 
-import { useLazyGetCharByIdQuery } from '../../features/api/charsSlice';
+import { useLazyGetCharByIdQuery, selectChar } from '../../features/api/charsSlice';
 
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
@@ -14,10 +15,11 @@ const CharInfo = ({ charId }) => {
         isFetching,
         isError
     }] = useLazyGetCharByIdQuery()
+    const selected = useSelector(selectChar)
 
     useEffect(() => {
-        if (charId) trigger(charId)       
-    }, [trigger, charId])
+        if (selected) trigger(selected)       
+    }, [trigger, selected])
 
     const renderChar = (char) => {
         if (isFetching) return <Spinner />

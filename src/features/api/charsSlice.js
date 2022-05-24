@@ -63,19 +63,23 @@ const initialState = {
 	selected: null
 }
 
-const searchSlice = createSlice({
-    name: 'search',
-    initialState: '_',
+const charsSlice = createSlice({
+    name: 'chars',
+    initialState,
     reducers: {
         changeSearch(state, action) {
-            return state = action.payload
+						return state = { ...state, search: action.payload }
+        },
+				changeSelected(state, action) {
+						return state = { ...state, selected: action.payload }
         }
     }
 })
 
-export const { changeSearch } = searchSlice.actions
+export const { changeSearch, changeSelected } = charsSlice.actions
 
-export default searchSlice.reducer
+export default charsSlice.reducer
 
-export const selectSearch = state => state.search
+export const selectSearch = state => state.chars.search
+export const selectChar = state => state.chars.selected
 

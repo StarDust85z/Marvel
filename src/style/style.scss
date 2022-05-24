@@ -12,9 +12,9 @@
 body {
     color: $ff-color;
     text-shadow: 1px 1px #102;
-    background: $background-base;
+    background:  $background-base no-repeat;
     min-height: 100vh;
-    min-width: 100vw;
+    // min-width: 100vw;
 }
 
 ul,
@@ -64,8 +64,10 @@ input::-webkit-inner-spin-button {
 
     .bg-decoration {
         position: absolute;
-        right: -174px;
-        bottom: -52px;
+        // right: -174px;
+        bottom: -24px;
+        // right: -90px;
+        right: -24px;
         z-index: -1;
     }
 }

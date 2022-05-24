@@ -9,6 +9,7 @@ import ErrorBoundary from "../errorBoundary/ErrorBoundary";
 import AnimatedPage from '../pages/AnimatedPage';
 
 import decoration from '../../resources/img/vision.png';
+import decoration2 from '../../resources/img/spiderman.png'
 
 const MainPage = () => {
     const [char, setChar] = useState(null)
@@ -43,7 +44,7 @@ const MainPage = () => {
                     </ErrorBoundary>           
                 </aside>  
             </div>
-            <img className="bg-decoration" src={decoration} alt="vision"/>
+            <img width="400px" className="bg-decoration" src={decoration2} alt="vision"/>
         </AnimatedPage>
     )
 }
