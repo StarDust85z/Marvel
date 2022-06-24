@@ -1,15 +1,10 @@
-import { 
-    createSelector,
-    createSlice,
-} from '@reduxjs/toolkit'
-
+import { createSlice } from '@reduxjs/toolkit'
 import { apiSlice } from './apiSlice'
 
 const _apiKey = `apikey=${process.env.REACT_APP_API_KEY}`
 const limit = 10
 
 const _transformCharacter = (char) => {
-	// console.log(char);
 	return {
 		name: char.name,
 		description: char.description,

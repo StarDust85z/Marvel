@@ -61,6 +61,12 @@
                 margin-top: 12px;
                 margin-left: 5px;
                 font-size: 14px;
+                & a {
+                    font-weight: bold;
+                    &:hover {
+                        color: $main-text;
+                    }
+                }
             }
         }
 

@@ -1,0 +1,21 @@
+@import '../../style/variables';
+
+.page404 {
+		margin-top: 100px;
+		text-align: center;
+		font-weight: bold;
+		font-size: 24px;
+
+		&__text {
+			margin-top: 30px;
+		}
+
+		&__link {
+			display: block;
+			margin-top: 30px;
+			cursor: pointer;
+			&:hover {
+				color: $main-text;
+			}
+		}
+}

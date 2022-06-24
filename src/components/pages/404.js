@@ -4,6 +4,8 @@ import ErrorMessage from "../errorMessage/ErrorMessage"
 import { Link } from "react-router-dom"
 import AnimatedPage from '../pages/AnimatedPage';
 
+import './404.scss';
+
 const Page404 = () => {
     return (
         <AnimatedPage>
@@ -14,11 +16,10 @@ const Page404 = () => {
                 />
                 <title>Page not found</title>
             </Helmet>
-            <div>
-                <p style={{'height': 100}} />
-                <ErrorMessage  style={{'marginTop': 80}} />
-                <p style={{'textAlign': 'center', 'fontWeight': 'bold', 'fontSize': '24px', 'marginTop': 30}}>404. Hydra has attacked that page..</p>
-                <Link style={{'display': 'block', 'textAlign': 'center', 'fontWeight': 'bold', 'fontSize': '24px', 'marginTop': '30px', 'cursor': 'pointer'}} to="/">Back to the main page</Link>            
+            <div className='page404'>
+                <ErrorMessage />
+                <p className='page404__text'>404. Hydra has attacked that page..</p>
+                <Link className='page404__link' to="/">Back to the main page</Link>
             </div>
         </AnimatedPage>        
     )

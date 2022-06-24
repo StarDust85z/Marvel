@@ -1,6 +1,5 @@
 import { useState, useRef, useMemo, useEffect } from 'react';
 import { useSelector } from 'react-redux'
-import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
 import { useDispatch } from 'react-redux';
 
@@ -11,7 +10,7 @@ import ErrorMessage from '../errorMessage/ErrorMessage';
 import './charList.scss';
 import { effects, cardAnimation } from '../../features/animations'
 
-const CharList = (props) => {
+const CharList = () => {
     const dispatch = useDispatch()
     const search = useSelector(selectSearch)
     

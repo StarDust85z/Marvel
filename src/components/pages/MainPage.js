@@ -8,8 +8,8 @@ import CharSearch from "../charSearch/CharSearch";
 import ErrorBoundary from "../errorBoundary/ErrorBoundary";
 import AnimatedPage from '../pages/AnimatedPage';
 
-import decoration from '../../resources/img/vision.png';
-import decoration2 from '../../resources/img/spiderman.png'
+// import decoration from '../../resources/img/vision.png';
+import decoration from '../../resources/img/spiderman.png'
 
 const MainPage = () => {
     const [char, setChar] = useState(null)
@@ -26,7 +26,7 @@ const MainPage = () => {
                     name="description"
                     content="Marvel information portal main page"
                 />
-                <title>Marvel Information Portal</title>
+                <title>Marvel Info Portal</title>
             </Helmet>
             <ErrorBoundary>  
                 <RandomChar/>
@@ -44,7 +44,7 @@ const MainPage = () => {
                     </ErrorBoundary>           
                 </aside>  
             </div>
-            <img width="400px" className="bg-decoration" src={decoration2} alt="vision"/>
+            <img width="400px" className="bg-decoration" src={decoration} alt="SpiderMan"/>
         </AnimatedPage>
     )
 }

@@ -58,7 +58,7 @@ const View = ({ char }) => {
             )
         } else if (i === 10) {
             return <li key={i}>
-                more comics on the character's page..
+                more comics on the <Link to={`characters/${id}`}>character's page</Link>..
             </li>
         } else {
             return null

@@ -1,10 +1,10 @@
 # Marvel API test App
 
-# Marvel Information Portal
+# Marvel Info Portal
 
-Marvel Information Portal app uses official Marvel Developer API. Can be used to gather info about Marvel comics and characters.
+Marvel Info Portal app uses official Marvel Developer API. Can be used to gather info about Marvel comics and characters.
 
-Built on React, React Router, Redux Toolkit Query & more. Not adapted for mobile devices and smaller widths.
+Built on **React, React Router, Redux Toolkit Query** & more. **Not adapted** for mobile devices and smaller widths.
 
 ## Table of contents
 
@@ -14,6 +14,7 @@ Built on React, React Router, Redux Toolkit Query & more. Not adapted for mobile
 - [My process](#my-process)
   - [Built with](#built-with)
   - [What I learned](#what-i-learned)
+  - [Continued development](#continued-development)
 - [Author](#author)
 - [Acknowledgments](#acknowledgments)
 
@@ -21,7 +22,7 @@ Built on React, React Router, Redux Toolkit Query & more. Not adapted for mobile
 
 ### My goals
 
-- Make it possible to search characters, read information about them and their comics
+- Make it possible to search characters, read information about them and comics with them
 - Smooth transitions, list animations
 - Keyboard accesibility, focus & hover states
 - Error boundaries
@@ -46,10 +47,16 @@ Built on React, React Router, Redux Toolkit Query & more. Not adapted for mobile
 
 How to use real world API & queries, work with animations and make app keyboard-accesible.
 
+### Continued development
+
+My remaining targets for the app:
+
+- Put characters/comics list into RTK EntityAdapter via RTK Query
+
 ## Author
 
-- Sergej Zhilinskij - [Github](https://github.com/StarDust85z)
+- Sergej Zhilinskij - [Github](https://github.com/StarDust198)
 
 ## Acknowledgments
 
-Big thanks to Ivan Petrichenko - [His page with courses on Udemy](https://www.udemy.com/user/yan-kovalenko-2/). The app was started on his course and I highly recommend his course to everyone.
+Big thanks to Ivan Petrichenko - [His page with courses on Udemy](https://www.udemy.com/user/yan-kovalenko-2/). The app was started on his course and I highly recommend his course to everyone who wants to learn JS/React.
