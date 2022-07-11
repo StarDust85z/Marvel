@@ -37,7 +37,7 @@ Built on **React, React Router, Redux Toolkit Query** & more. **Not adapted** fo
 
 - CSS Grid, SCSS
 - [React](https://reactjs.org/) - JS library
-- [Redux Toolkit](https://redux-toolkit.js.org/) - JS library for managing state & queries
+- [Redux & Redux Toolkit](https://redux-toolkit.js.org/) - JS library for managing state & queries
 - [React Router](https://reactrouter.com/) - React library
 - [Framer Motion](https://www.framer.com/motion/) - For animations & transitions
 - [React Hook Form](https://react-hook-form.com/) - React library for forms
