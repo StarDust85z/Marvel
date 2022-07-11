@@ -1,4 +1,3 @@
-import { useState } from "react"
 import { Helmet } from "react-helmet-async";
 
 import RandomChar from "../randomChar/RandomChar";
@@ -8,16 +7,10 @@ import CharSearch from "../charSearch/CharSearch";
 import ErrorBoundary from "../errorBoundary/ErrorBoundary";
 import AnimatedPage from '../pages/AnimatedPage';
 
-// import decoration from '../../resources/img/vision.png';
 import decoration from '../../resources/img/spiderman.png'
 
 const MainPage = () => {
-    const [char, setChar] = useState(null)
-    // const [search, setSearch] = useState('null')
-
-    const onCharSelected = id => setChar(id)
-
-    console.log('mp render');
+    // console.log('mp render');
     
     return (
         <AnimatedPage>
@@ -33,11 +26,11 @@ const MainPage = () => {
             </ErrorBoundary>  
             <div className="char__content">
                 <ErrorBoundary>
-                    <CharList onCharSelected={onCharSelected}/>
+                    <CharList/>
                 </ErrorBoundary>
                 <aside className="char__aside">
                     <ErrorBoundary>
-                        <CharInfo charId={char}/>
+                        <CharInfo/>
                     </ErrorBoundary>     
                     <ErrorBoundary>
                         <CharSearch/>

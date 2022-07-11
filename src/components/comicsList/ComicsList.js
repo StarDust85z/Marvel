@@ -48,29 +48,27 @@ const ComicsList = () => {
         if (isError) return <ErrorMessage />
 
         const listItems = arr.map(({title, thumbnail, id, price}, i) => {
-            // if (i < arr.length - 1 && !comicsEnded) {
-                if (title.length > 36) title = title.slice(0,36) + '...';
-                let imgStyle = thumbnail.endsWith('image_not_available.jpg') ? 
-                    {'objectFit' : 'unset'} : {'objectFit' : 'cover'};
+            if (title.length > 36) title = title.slice(0,36) + '...';
+            let imgStyle = thumbnail.endsWith('image_not_available.jpg') ? 
+                {'objectFit' : 'unset'} : {'objectFit' : 'cover'};
 
-                return (
-                    <motion.li className="comics__item"
-                        // tabIndex={'0'}
-                        key={i}
-                        initial="hidden"
-                        whileInView="visible"
-                        variants={cardAnimation}
-                        viewport={{ once: true }}
-                        transition={effects}   
-                    >
-                        <Link to={`/comics/${id}`}>
-                            <img src={thumbnail} alt={title} style={imgStyle} className="comics__item-img"/>
-                            <div className="comics__item-name">{title}</div>
-                            <div className="comics__item-price">{`${price}`}</div>
-                        </Link>
-                    </motion.li>
-                )
-            // } else return null
+            return (
+                <motion.li className="comics__item"
+                    // tabIndex={'0'}
+                    key={i}
+                    initial="hidden"
+                    whileInView="visible"
+                    variants={cardAnimation}
+                    viewport={{ once: true }}
+                    transition={effects}   
+                >
+                    <Link to={`/comics/${id}`}>
+                        <img src={thumbnail} alt={title} style={imgStyle} className="comics__item-img"/>
+                        <div className="comics__item-name">{title}</div>
+                        <div className="comics__item-price">{`${price}`}</div>
+                    </Link>
+                </motion.li>
+            )
         })
 
         return (
@@ -80,7 +78,10 @@ const ComicsList = () => {
         )                
     }
 
-    const elements = useMemo(() => renderItems(comicsList), [comicsList, isLoading])
+    const elements = useMemo(() => {
+        return renderItems(comicsList)
+        // eslint-disable-next-line
+    }, [comicsList, isLoading])
 
     return (
         <div className="comics__list">            

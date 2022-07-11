@@ -35,9 +35,7 @@ export const apiSlice = createApi({
 })
 
 export const { 
-	useGetComicByIdQuery,
 	useLazyGetComicByIdQuery,
 	useLazyGetComicsQuery,
-	useGetComicsByCharIdQuery,
 	useLazyGetComicsByCharIdQuery
 } = apiSlice

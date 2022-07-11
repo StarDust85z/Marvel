@@ -6,7 +6,6 @@
         box-shadow: 0 0 20px rgb(0 0 0 / 25%);
         position: relative;
         z-index: 5;
-        // background: $background-small;
 
         &-name {
             font-weight: bold;
@@ -54,6 +53,7 @@
 
         &-list {
             position: relative;
+
             li:last-child:not(.char__comics-item) {
                 color: $inactive;
                 font-style: italic;
@@ -61,8 +61,10 @@
                 margin-top: 12px;
                 margin-left: 5px;
                 font-size: 14px;
+
                 & a {
                     font-weight: bold;
+
                     &:hover {
                         color: $main-text;
                     }
@@ -81,7 +83,6 @@
                 font-size: 14px;
                 font-weight: 400;
                 transition: all 0.3s;
-                width: 100%;
 
                 &:hover, &:focus {
                     transform: translateY(-3px);

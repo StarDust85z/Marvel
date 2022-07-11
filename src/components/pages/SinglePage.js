@@ -1,6 +1,7 @@
 import { useParams, Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
+import cn from 'classnames';
 
 import { useLazyGetCharByIdQuery } from '../../features/api/charsSlice';
 import { useLazyGetComicByIdQuery, useLazyGetComicsByCharIdQuery } from '../../features/api/apiSlice';
@@ -15,10 +16,6 @@ import './SinglePage.scss';
 
 const SinglePage = () => {
     const { comicId, charId } = useParams()
-    // const [ comic, setComic ] = useState(null)
-    // const [ char, setChar ] = useState(null)
-
-    // const {clearError, process, setProcess, getComic, getCharacterByName} = useMarvelService()
     
     const [ triggerChar, {
         data: char,
@@ -39,7 +36,6 @@ const SinglePage = () => {
     }, [charId, comicId])
 
     const renderPage = () => {
-        console.log(char, comic);
         if (isCharFetching || isComicFetching) return <Spinner />
         if (isCharError || isComicError) return <Page404 />
         if (char) return <ViewChar char={char} />
@@ -116,19 +112,12 @@ const ViewChar = ({char}) => {
     }
 
     const renderComics = () => {
-        // if (isFetching && comicsList.length === 0) {
-        //     return <p className='single-page__comics-more'>loading comics list..</p>
-        // }
         if (isError) return <ErrorMessage />
-
-        // if (comicsList.length === 0 && !isFetching) {
-        //     return <p className='single-page__comics-more'>No comics available for that character</p>
-        // }
 
         const comicsMore = ( 
             <li 
                 key={'more'}
-                className={`single-page__comics-more btn ${isFetching ? 'loading' : ''}`}
+                className={cn('single-page__comics-more', 'btn', { 'loading' : isFetching })}
                 style={{ 'display': comicsEnded ? 'none' : 'block' }}
                 onClick={() => updateList()}
             >
@@ -146,15 +135,12 @@ const ViewChar = ({char}) => {
 
         return (
             <>  
-                { comicsList.length === 0 && !isFetching ?
-                    <p className='single-page__comics-more'>No comics available for that character</p>
-                : null }       
-                { isFetching && comicsList.length === 0 ?
-                    <p className='single-page__comics-more'>loading comics list..</p>
-                : null }  
-                { comicsList.length ? 
-                    <p className="single-page__comics-descr">{`Comics available:`}</p>
-                : null }
+                { !comicsList.length && !isFetching &&
+                    <p className='single-page__comics-more'>No comics available for that character</p> } 
+                { isFetching && !comicsList.length &&
+                    <p style={{marginTop: 30}} className='single-page__comics-more loading'>loading comics list..</p> }  
+                { !!comicsList.length &&
+                    <p className="single-page__comics-descr">Comics available:</p> }
                 <ul 
                     style={{
                         height: comicsList.length * 36,
@@ -162,8 +148,9 @@ const ViewChar = ({char}) => {
                             `height ${ 0.25 * comicsList.length }s`
                         : `height 3.5s`,
                     }}
-                    className={`single-page__comics-list` + 
-                        `${comicsList.length > 14 ? ' single-page__comics-scroll' : ''}`}
+                    className={cn(
+                        `single-page__comics-list`, {'single-page__comics-scroll': comicsList.length > 14 }
+                    )}
                 >
                     {comicsItems}
                 </ul>

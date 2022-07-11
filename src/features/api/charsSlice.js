@@ -43,13 +43,8 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
 })
 
 export const {
-	useGetCharsQuery,
 	useLazyGetCharsQuery,
-	useGetCharsBySearchQuery,
 	useLazyGetCharsBySearchQuery,
-	useGetCharByNameQuery,
-	useLazyGetCharByNameQuery,
-	useGetCharByIdQuery,
 	useLazyGetCharByIdQuery,
 } = extendedApiSlice
 

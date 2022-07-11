@@ -25,7 +25,7 @@ const RandomChar = () => {
 
     useEffect(() => {
         setRandomChar()
-        const timerId = setInterval(setRandomChar, 60000)
+        const timerId = setInterval(setRandomChar, 300000)
 
         return () => {
             clearInterval(timerId)
@@ -37,6 +37,10 @@ const RandomChar = () => {
         if (isFetching) return <Spinner />
         if (isError) return <ErrorMessage />
         if (char) return <View char={char} />
+
+        return (
+            <div className="randomchar__block"></div>
+        )
     }
 
     const content = renderBlock()
@@ -64,7 +68,7 @@ const RandomChar = () => {
 const View = ({char}) => {
     const {name, id, description, thumbnail, homepage} = char
 
-    const descr = !description ? "Description not avaible yet, look for comics on the character's page or read more info on the wiki page" : 
+    const descr = !description ? "Description not available yet, look for comics on the character's page or read more info on the wiki page" : 
     description.length > 200 ?  description.slice(0, 200) + '...' : description;
 
     const imgStyle = thumbnail?.indexOf('image_not_available.jpg') !== -1 ? {'objectFit': 'contain'} : {'objectFit': 'unset'};

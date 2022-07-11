@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux'
 
@@ -9,7 +9,7 @@ import ErrorMessage from '../errorMessage/ErrorMessage';
 import Skeleton from '../skeleton/Skeleton';
 import './charInfo.scss';
 
-const CharInfo = ({ charId }) => {
+const CharInfo = () => {
     const [trigger, {
         data: char,
         isFetching,
@@ -24,14 +24,15 @@ const CharInfo = ({ charId }) => {
     const renderChar = (char) => {
         if (isFetching) return <Spinner />
         if (isError) return <ErrorMessage />
-        if (char) return <View 
-            char={char}
-        />
+        if (char) return <View char={char} />
 
         return <Skeleton />
     }
 
-    const content = useMemo(() => renderChar(char), [char, isFetching])
+    const content = useMemo(() => {
+        return renderChar(char)
+        // eslint-disable-next-line
+    }, [char, isFetching])
 
     return (
         <div className="char__info">
@@ -63,7 +64,7 @@ const View = ({ char }) => {
         } else {
             return null
         }
-    }) : 'No comics avaible for that character'
+    }) : 'No comics available for that character'
     
     return (
         <>

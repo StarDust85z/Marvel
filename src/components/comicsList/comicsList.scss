@@ -23,12 +23,6 @@
 
         &-name {
             padding: 8px 15px;
-            text-transform: uppercase;
-
-            // margin-top: 10px;
-            font-weight: bold;
-            font-size: 14px;
-            line-height: 18px;
             font-weight: bold;
             font-size: 18px;
             line-height: 29px;
@@ -46,8 +40,6 @@
             right: 10px;
             bottom: 5px;
             color: #fff;
-
-            // text-transform: uppercase;
         }
 
         & a {
@@ -58,14 +50,8 @@
             background: $dark-gradient;
 
             &:hover, &:focus {
-                // display: block;
-                // position: absolute;
                 transform: translateY(-5px);
-
-                // box-shadow: 0px 5px 20px $main-color;
                 box-shadow: $shadow-active 0 5px 25px;
-
-                // rgb(149, 40, 53)
             }
         }
     }

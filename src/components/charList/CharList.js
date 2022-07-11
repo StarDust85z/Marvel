@@ -25,9 +25,10 @@ const CharList = () => {
     }] = useLazyGetCharsBySearchQuery()
 
     useEffect(() => {
-        dispatch(changeSearch('_'))
+        // dispatch(changeSearch('_'))
 
         return () => dispatch(changeSearch('_'))
+        // eslint-disable-next-line
     }, [])
 
     useEffect(() => {
@@ -35,6 +36,7 @@ const CharList = () => {
         setCharEnded(false)
         setOffset(0)
         updateList(0)
+        // eslint-disable-next-line
     }, [search])
 
     const onCharSelect = (id) => {
@@ -76,7 +78,7 @@ const CharList = () => {
     }
 
     const renderItems = (arr) => {
-        console.log('list render');
+        // console.log('list render');
 
         if (isFetching && !offset) return <Spinner />
         if (isError) return <ErrorMessage />
@@ -124,7 +126,10 @@ const CharList = () => {
         )                
     }
 
-    const elements = useMemo(() => renderItems(charList), [charList, isLoading])
+    const elements = useMemo(() => {
+        return renderItems(charList)
+        // eslint-disable-next-line
+    }, [charList, isLoading])
 
     return (
         <div className="char__list">

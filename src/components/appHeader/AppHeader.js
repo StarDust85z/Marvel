@@ -13,11 +13,11 @@ const AppHeader = () => {
                 <ul>
                     <li><NavLink 
                         end
-                        activeClassName="active"
+                        // activeClassName="active"
                         to="/">Characters</NavLink></li>
                     /
                     <li><NavLink 
-                        activeClassName="active"
+                        // activeClassName="active"
                         end to="/comics">Comics</NavLink></li>
                 </ul>
             </nav>
