@@ -1,16 +1,19 @@
 {
   "name": "marvel",
   "version": "0.1.0",
+  "engines": {
+    "node": "16.x"
+  },
   "private": true,
   "dependencies": {
-    "@reduxjs/toolkit": "^1.7.2",
+    "@reduxjs/toolkit": "^1.8.3",
     "@testing-library/jest-dom": "^5.15.1",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
     "classnames": "^2.3.1",
     "framer-motion": "^6.2.6",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
     "react-helmet-async": "^1.2.3",
     "react-hook-form": "^7.22.5",
     "react-redux": "^7.2.6",
