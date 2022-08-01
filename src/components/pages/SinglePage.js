@@ -133,6 +133,13 @@ const ViewChar = ({char}) => {
             )
         }), comicsMore]
 
+        const comicsStyle = {
+            height: comicsList.length * 36,
+            transition: comicsList.length > 14 ? 
+                `height ${ 0.25 * comicsList.length }s`
+            : `height 3.5s`,
+        }
+
         return (
             <>  
                 { !comicsList.length && !isFetching &&
@@ -142,12 +149,7 @@ const ViewChar = ({char}) => {
                 { !!comicsList.length &&
                     <p className="single-page__comics-descr">Comics available:</p> }
                 <ul 
-                    style={{
-                        height: comicsList.length * 36,
-                        transition: comicsList.length > 14 ? 
-                            `height ${ 0.25 * comicsList.length }s`
-                        : `height 3.5s`,
-                    }}
+                    style={comicsStyle}
                     className={cn(
                         `single-page__comics-list`, {'single-page__comics-scroll': comicsList.length > 14 }
                     )}
