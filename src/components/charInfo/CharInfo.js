@@ -48,7 +48,7 @@ const View = ({ char }) => {
         {'objectFit' : 'contain'} : {'objectFit' : 'cover'};
 
     const comicsItems = comics.length > 0 ? comics.map((item, i) => {
-        if (i < 10) {
+        if (i < 5) {
             const keyArray = item.resourceURI.split('/')
             const k = keyArray[keyArray.length-1]
 
@@ -57,7 +57,7 @@ const View = ({ char }) => {
                     <Link to={`comics/${k}`}>{item.name}</Link>
                 </li>
             )
-        } else if (i === 10) {
+        } else if (i === 5) {
             return <li key={i}>
                 more comics on the <Link to={`characters/${id}`}>character's page</Link>..
             </li>

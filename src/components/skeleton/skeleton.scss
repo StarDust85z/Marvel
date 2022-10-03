@@ -1,6 +1,7 @@
 @import '../../style/variables';
 
 .skeleton {
+    background: $background-search;
     &__header {
         display: grid;
         grid-template-columns: 40px auto;

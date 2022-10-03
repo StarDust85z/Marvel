@@ -1,3 +1,4 @@
+import { useEffect , useRef } from 'react';
 import { Helmet } from "react-helmet-async";
 
 import RandomChar from "../randomChar/RandomChar";
@@ -8,10 +9,43 @@ import ErrorBoundary from "../errorBoundary/ErrorBoundary";
 import AnimatedPage from '../pages/AnimatedPage';
 
 import decoration from '../../resources/img/spiderman.png'
+import './MainPage.scss';
+
 
 const MainPage = () => {
-    // console.log('mp render');
-    
+    const asideRef = useRef(null)
+    const contentRef = useRef(null)
+
+    const handleScroll = () => {
+        const { scrollY } = window
+        const { height: heightList } = contentRef.current.getBoundingClientRect()
+        const { height } = asideRef.current.getBoundingClientRect()
+        const diff2 = (scrollY - 380 + height) - (heightList)
+        if (window.scrollY < 380) {
+            asideRef.current.style.top = "0px"
+        } else if (diff2 > 0) {
+            asideRef.current.style.top = (scrollY - 380 - diff2) + 'px';
+        } else {
+            asideRef.current.style.top = (scrollY - 380) + 'px';
+        }
+    };
+
+    useEffect(() => {
+        const aside = asideRef.current
+        window.addEventListener("scroll", handleScroll);
+        window.addEventListener("resize", () => console.log('hi'));
+        const resizeObserver = new ResizeObserver(entries => {
+            handleScroll()
+        })
+
+        resizeObserver.observe(aside)
+
+        return () => {
+            window.removeEventListener("scroll", handleScroll)
+            resizeObserver.unobserve(aside)
+        };
+    }, []);
+
     return (
         <AnimatedPage>
             <Helmet>
@@ -25,10 +59,12 @@ const MainPage = () => {
                 <RandomChar/>
             </ErrorBoundary>  
             <div className="char__content">
+                <div className="test" ref={contentRef}>
                 <ErrorBoundary>
                     <CharList/>
                 </ErrorBoundary>
-                <aside className="char__aside">
+                </div>
+                <aside className="char__aside" ref={asideRef}>
                     <ErrorBoundary>
                         <CharInfo/>
                     </ErrorBoundary>     

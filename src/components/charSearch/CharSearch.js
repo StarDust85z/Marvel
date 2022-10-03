@@ -15,8 +15,8 @@ for (let i = 0; i < 26; i++) {
 }
 
 const CharSearch = () => {
-    const dispatch = useDispatch()
     const [open, setOpen] = useState(false)
+    const dispatch = useDispatch()
     
     const { 
         register, 
@@ -62,7 +62,7 @@ const CharSearch = () => {
     }
 
     return (
-        <div className={cn("char__search")} style={searchStyle}>
+        <div className="char__search" style={searchStyle}>
             <div className={cn('char__search-title', 'expand', {
                 open
             })} onClick={() => setOpen(open => !open)}>
