@@ -42,8 +42,6 @@ const ComicsList = () => {
     }
 
     const renderItems = (arr) => {
-        console.log('Comics render!');
-
         if (isFetching && !comicsList.length) return <Spinner />
         if (isError) return <ErrorMessage />
 

@@ -17,27 +17,28 @@ const MainPage = () => {
     const contentRef = useRef(null)
 
     const handleScroll = () => {
-        const { scrollY } = window
-        const { height: heightList } = contentRef.current.getBoundingClientRect()
-        const { height } = asideRef.current.getBoundingClientRect()
-        const diff2 = (scrollY - 380 + height) - (heightList)
-        if (window.scrollY < 380) {
-            asideRef.current.style.top = "0px"
-        } else if (diff2 > 0) {
-            asideRef.current.style.top = (scrollY - 380 - diff2) + 'px';
-        } else {
-            asideRef.current.style.top = (scrollY - 380) + 'px';
+        if (asideRef.current && contentRef.current) {
+            const { scrollY } = window
+            const { height: heightList } = contentRef.current.getBoundingClientRect()
+            const { height } = asideRef.current.getBoundingClientRect()
+            const diff2 = (scrollY - 380 + height) - (heightList)
+            if (window.scrollY < 380) {
+                asideRef.current.style.top = "0px"
+            } else if (diff2 > 0) {
+                asideRef.current.style.top = (scrollY - 380 - diff2) + 'px';
+            } else {
+                asideRef.current.style.top = (scrollY - 380) + 'px';
+            }
         }
     };
 
     useEffect(() => {
         const aside = asideRef.current
         window.addEventListener("scroll", handleScroll);
-        window.addEventListener("resize", () => console.log('hi'));
+
         const resizeObserver = new ResizeObserver(entries => {
             handleScroll()
         })
-
         resizeObserver.observe(aside)
 
         return () => {
